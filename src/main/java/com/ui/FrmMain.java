@@ -1,5 +1,9 @@
 package com.ui;
 
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.Bullet;
 import org.eclipse.swt.custom.LineStyleEvent;
@@ -25,8 +29,13 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.xml.sax.SAXException;
 
-public class FrmMain {
+import com.constant.Constant;
+import com.process.NodeType;
+import com.process.ReadWriteDataFromFile;
+
+public class FrmMain extends Constant {
 
 	protected Shell shell;
 
@@ -65,40 +74,18 @@ public class FrmMain {
 		shell = new Shell();
 		shell.setLayout(new GridLayout(1, false));
 
-		ToolBar toolBar = new ToolBar(shell, SWT.FLAT | SWT.RIGHT);
+		final ToolBar toolBar = new ToolBar(shell, SWT.FLAT | SWT.RIGHT);
 		toolBar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		
 		// item file
-		ToolItem itemFile = new ToolItem(toolBar, SWT.DROP_DOWN);
+		final ToolItem itemFile = new ToolItem(toolBar, SWT.DROP_DOWN);
 		itemFile.setText("File");
-		
-		Menu fileMenu = new Menu(toolBar);
+
+		final Menu fileMenu = new Menu(toolBar);
 		MenuItem openFile = new MenuItem(fileMenu, SWT.PUSH);
 		openFile.setText("&Open\tCTRL+O");
 		openFile.setAccelerator(SWT.CTRL + 'O');
-		
-		
-		class Open implements SelectionListener{
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				FileDialog fd = new FileDialog(shell, SWT.OPEN);
-		        fd.setText("Open");
-		        fd.setFilterPath("C:/");
-		        String[] filterExt = { "*.txt", "*.doc", ".rtf", "*.*", "*.xml" };
-		        fd.setFilterExtensions(filterExt);
-		        fd.open();
-		        //String selected = fd.open();
-			}
 
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		}
-		openFile.addSelectionListener(new Open());
 		itemFile.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
@@ -140,10 +127,37 @@ public class FrmMain {
 		styledText.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				// TODO Auto-generated method stub
 				styledText.redraw();
 			}
 		});
+
+		class Open implements SelectionListener {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog fd = new FileDialog(shell, SWT.OPEN);
+				fd.setText("Open");
+				fd.setFilterPath("C:/");
+				String[] filterExt = { "*.xml", "*.txt", "*.doc", ".rtf", "*.*" };
+				fd.setFilterExtensions(filterExt);
+				SELECTED = fd.open();
+				try {
+					//NodeType.parseXML(SELECTED);
+					ReadWriteDataFromFile.readData(SELECTED);
+					styledText.setText(TEXT);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+		}
+
+		openFile.addSelectionListener(new Open());
 
 	}
 
