@@ -6,6 +6,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -42,11 +43,12 @@ public class NodeType extends Constant{
 		print(">"  + "\n");
 		// Lay ra danh sach cac nut con cua nut Element element
 		NodeList nodeList = element.getChildNodes();
-		System.out.println(nodeList.getLength());
+		//System.out.println(nodeList.getLength());
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			System.out.println("----------------------" + i + "-------------------------");
 			Node node = nodeList.item(i);
 			short type = node.getNodeType();
+			System.out.println("@@@@@@@@@@@@@@@@@@  "+type+"  @@@@@@@@@@@@@@@@@");
 			switch (type) {
 			// Truong hop nut con thu i la mot Element
 			case Node.ELEMENT_NODE:
@@ -54,8 +56,12 @@ public class NodeType extends Constant{
 				break;
 			case Node.COMMENT_NODE:
 				print("<!--" + node.getNodeValue() + "-->\n");
+				
 				break;
-			case Node.:
+			case Node.TEXT_NODE:
+				print(node.getNodeValue()+"\n");
+				break;
+			case Node.ATTRIBUTE_NODE:
 				print(node.getNodeValue()+"\n");
 				break;
 			default:
@@ -65,8 +71,21 @@ public class NodeType extends Constant{
 		}
 	}
 	
-	private static void processNode1(Element element) {
-		
+	private static void processNode1() {
+		String xmlFile = "C:\\apache-maven-3.3.9-bin\\apache-maven-3.3.9\\conf\\settings.xml";
+		DOMParser parser = new DOMParser();
+		try {
+		   //Phân tích tài liệu xml .Sau bước này có một cây DOM trong bộ nhớ
+		   // chính là hình ảnh của tài liệu
+		   parser.parse(xmlFile);
+		} catch (SAXException se) {
+		   se.printStackTrace();
+		} catch (IOException ioe) {
+		   ioe.printStackTrace();
+		}
+		//Lấy ra nút Document mô tả toàn bộ tài liệu XML
+		Document document = parser.getDocument();
+		System.out.println(document.toString());
 	}
 	
 	private static void print(String s) {

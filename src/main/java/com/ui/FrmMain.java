@@ -2,8 +2,6 @@ package com.ui;
 
 import java.io.IOException;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.Bullet;
 import org.eclipse.swt.custom.LineStyleEvent;
@@ -29,10 +27,8 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.xml.sax.SAXException;
 
 import com.constant.Constant;
-import com.process.NodeType;
 import com.process.ReadWriteDataFromFile;
 
 public class FrmMain extends Constant {
@@ -104,12 +100,11 @@ public class FrmMain extends Constant {
 
 		final StyledText styledText = new StyledText(shell, SWT.BORDER | SWT.V_SCROLL | SWT.MULTI | SWT.H_SCROLL);
 		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
-
+		
 		styledText.addLineStyleListener(new LineStyleListener() {
 			@Override
 			public void lineGetStyle(LineStyleEvent event) {
-				// Using ST.BULLET_NUMBER sometimes results in weird alignment.
-				// event.bulletIndex = styledText.getLineAtOffset(event.lineOffset);
+				//event.bulletIndex = styledText.getLineAtOffset(event.lineOffset);
 				StyleRange styleRange = new StyleRange();
 				styleRange.foreground = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
 				int maxLine = styledText.getLineCount();
@@ -136,7 +131,7 @@ public class FrmMain extends Constant {
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog fd = new FileDialog(shell, SWT.OPEN);
 				fd.setText("Open");
-				fd.setFilterPath("C:/");
+				fd.setFilterPath(SELECTED);
 				String[] filterExt = { "*.xml", "*.txt", "*.doc", ".rtf", "*.*" };
 				fd.setFilterExtensions(filterExt);
 				SELECTED = fd.open();
@@ -148,15 +143,12 @@ public class FrmMain extends Constant {
 					e1.printStackTrace();
 				}
 			}
-
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-
 			}
-
 		}
-
+		
 		openFile.addSelectionListener(new Open());
 
 	}
