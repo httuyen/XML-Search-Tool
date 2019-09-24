@@ -1,5 +1,6 @@
 com\ui\FrmMain$1Open.class
 com\ui\FrmMain$2.class
+com\process\MapExample.class
 com\process\ReadWriteDataFromFile.class
 com\process\NodeType.class
 com\ui\FrmMain.class
