@@ -22,21 +22,20 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class PositionalXMLReader extends ReadWriteDataFromFile {
-	final static String LINE_NUMBER_KEY_NAME = "lineNumber";
-
-	public static void main(String[] args) throws IOException, SAXException {
-		
-		//File f = new File("D:\\EclipseWorkspace\\SearchTool\\java-project\\pom.xml"); 
-		ReadWriteDataFromFile.readData("D:\\EclipseWorkspace\\SearchTool\\java-project\\objects.xml");
-		InputStream is = new ByteArrayInputStream(TEXT.getBytes());
-		//InputStream is = new ByteArrayInputStream(xmlString.getBytes());
-		Document doc = PositionalXMLReader.readXML(is);
-		is.close();
-
-		Node node = doc.getElementsByTagName("Attribute").item(200);
-
-		System.out.println("Line number: " + node.getUserData("lineNumber"));
-	}
+	
+//	public static void main(String[] args) throws Exception{
+//		
+//		//File f = new File("D:\\EclipseWorkspace\\SearchTool\\java-project\\pom.xml"); 
+//		ReadWriteDataFromFile.readData("D:\\EclipseWorkspace\\SearchTool\\java-project\\objects.xml");
+//		InputStream is = new ByteArrayInputStream(TEXT.getBytes());
+//		//InputStream is = new ByteArrayInputStream(xmlString.getBytes());
+//		Document doc = PositionalXMLReader.readXML(is);
+//		is.close();
+//
+//		Node node = doc.getElementsByTagName("Attribute").item(200);
+//
+//		System.out.println("Line number: " + node.getUserData("lineNumber"));
+//	}
 
 	public static Document readXML(final InputStream is) throws IOException, SAXException {
 		final Document doc;
@@ -102,7 +101,6 @@ public class PositionalXMLReader extends ReadWriteDataFromFile {
 			}
 		};
 		parser.parse(is, handler);
-
 		return doc;
 	}
 }
