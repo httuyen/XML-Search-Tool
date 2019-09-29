@@ -21,7 +21,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class PositionalXMLReader extends ReadWriteDataFromFile {
+public class PositionalXMLReader {
 	
 //	public static void main(String[] args) throws Exception{
 //		
@@ -36,6 +36,8 @@ public class PositionalXMLReader extends ReadWriteDataFromFile {
 //
 //		System.out.println("Line number: " + node.getUserData("lineNumber"));
 //	}
+
+	protected static final String LINE_NUMBER_KEY_NAME = null;
 
 	public static Document readXML(final InputStream is) throws IOException, SAXException {
 		final Document doc;

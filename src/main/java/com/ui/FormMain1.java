@@ -228,7 +228,6 @@ public class FormMain1 extends NodeType {
 
 				} else {
 					try {
-						//System.out.println(formatStr(txtAttri.getText()));
 						STR_BUILDER.setLength(0);
 						parseXML(SELECTED, txtTagName.getText(), txtChildTag.getText(),
 								validLvlInput(txtLevel.getText()), createMap(formatStr(txtAttri.getText())), true,
