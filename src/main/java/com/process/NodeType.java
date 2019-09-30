@@ -1,17 +1,19 @@
 package com.process;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.html.dom.NameNodeListImpl;
-import org.eclipse.swt.internal.win32.KEYBDINPUT;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,8 +23,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.constant.Constant;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ui.FormMain1;
 
 @SuppressWarnings("unused")
 public class NodeType extends Constant {
@@ -156,35 +156,25 @@ public class NodeType extends Constant {
 
 	private static int printNode(Element element) throws InterruptedException {
 		STR_BUILDER = STR_BUILDER.append("<" + element.getNodeName());
-		// System.out.print("<" + element.getNodeName());
 		NamedNodeMap nodeMap = element.getAttributes();
 		NodeList nodeList = element.getChildNodes();
 		if (nodeMap.getLength() == 0 && nodeList.getLength() == 0) {
 			STR_BUILDER = STR_BUILDER.append("/>\n");
-			// TEXT = TEXT + "/>\n";
-			// System.out.println("/>");
+			//STR_BUILDER = STR_BUILDER.append("/>");
 		} else if (nodeMap.getLength() != 0 && nodeList.getLength() == 0) {
 			for (int i = 0; i < nodeMap.getLength(); i++) {
 				Attr at = (Attr) nodeMap.item(i);
-				
-				// at.getNodeValue() + "\"");
 				STR_BUILDER = STR_BUILDER.append(" " + at.getNodeName() + "=\"" + at.getNodeValue() + "\"");
-				// System.out.print(" " + at.getNodeName() + "=\"" + at.getNodeValue() + "\"");
 			}
 			STR_BUILDER = STR_BUILDER.append(" />\n");
-			// System.out.println(" />");
+			//STR_BUILDER = STR_BUILDER.append(" />");
 		} else {
 			for (int i = 0; i < nodeMap.getLength(); i++) {
 				Attr at = (Attr) nodeMap.item(i);
-				
-				// at.getNodeValue() + "\"");
 				STR_BUILDER = STR_BUILDER.append(" " + at.getNodeName() + "=\"" + at.getNodeValue() + "\"");
-				// System.out.print(" " + at.getNodeName() + "=\"" + at.getNodeValue() + "\"");
 			}
-			
 			STR_BUILDER = STR_BUILDER.append(">\n");
-			// TEXT = TEXT + ">\n";
-			// System.out.println(">");
+			//STR_BUILDER = STR_BUILDER.append(">");
 		}
 
 		for (int i = 0; i < nodeList.getLength(); i++) {
@@ -195,16 +185,12 @@ public class NodeType extends Constant {
 				printNode((Element) node);
 				break;
 			case Node.ATTRIBUTE_NODE:
-				// FormMain1.styledText.append(node.getNodeValue() + "\n");
 				STR_BUILDER = STR_BUILDER.append(node.getNodeValue() + "\n");
-				// TEXT = TEXT + node.getNodeValue() + "\n";
-				// System.out.println(node.getNodeValue());
+				//STR_BUILDER = STR_BUILDER.append(node.getNodeValue());
 				break;
 			case Node.COMMENT_NODE:
-				// FormMain1.styledText.append("<!-- " + node.getNodeValue() + "-->\n");
 				STR_BUILDER = STR_BUILDER.append("<!-- " + node.getNodeValue() + "-->\n");
-				// TEXT = TEXT+ "<!-- " + node.getNodeValue() + "-->\n";
-				// System.out.println("<!-- " + node.getNodeValue() + "-->");
+				//STR_BUILDER = STR_BUILDER.append("<!-- " + node.getNodeValue() + "-->");
 				break;
 			case Node.TEXT_NODE:
 				break;
@@ -215,19 +201,16 @@ public class NodeType extends Constant {
 		if (nodeList.getLength() == 0) {
 			return 0;
 		} else {
-			// FormMain1.styledText.append("</" + element.getNodeName() + ">\n");
 			STR_BUILDER = STR_BUILDER.append("</" + element.getNodeName() + ">\n");
-			// TEXT = TEXT + "</" + element.getNodeName() + ">\n";
-			// System.out.println("</" + element.getNodeName() + ">");
+			//STR_BUILDER = STR_BUILDER.append("</" + element.getNodeName()+">");
 			return 0;
 		}
-
+		
 	}
-	
 
 	private static void findNode(Element element, String nodeName, String childTag, int levelChild,
 			Map<String, String> attrsMap, boolean isHaveAttr, boolean isOnlyAttr) throws InterruptedException {
-
+		stack.clear();
 		NodeList nodeList = element.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);
@@ -235,51 +218,56 @@ public class NodeType extends Constant {
 			switch (type) {
 			case Node.ELEMENT_NODE:
 				if (node.getNodeName().equals(nodeName)) {
-					if(!isHaveAttr && childTag.isEmpty()) {
-						printNode((Element)node);
+					if (!isHaveAttr && childTag.isEmpty()) {
+						printNode((Element) node);
+						FOUNDED = true;
 						continue;
 					}
-					if(isHaveAttr && childTag.isEmpty()) {
-						if(checkAttrMulti(attrsMap, setMap((Element) node), isOnlyAttr)) {
-							printNode((Element)node);
-							return;
-						}else {
+					if (isHaveAttr && childTag.isEmpty()) {
+						if (checkAttrMulti(attrsMap, setMap((Element) node), isOnlyAttr)) {
+							printNode((Element) node);
+							FOUNDED = true;
+						} else {
 							continue;
 						}
 					}
-					
-					if(!isHaveAttr && !childTag.isEmpty()) {
+
+					if (!isHaveAttr && !childTag.isEmpty()) {
 						KEY_FLAG = false;
-						if(checkChildExist1((Element) node, childTag)) {
-							printNode((Element)node);
+						if (checkChildExist1((Element) node, childTag)) {
+							printNode((Element) node);
+							FOUNDED = true;
 							continue;
 						}
 					}
-					
+
 					if (isHaveAttr && levelChild == 0) {
 						KEY_FLAG = false;
 						if (checkAttrMulti(attrsMap, setMap((Element) node), isOnlyAttr)) {
 							if (checkChildExist1((Element) node, childTag)) {
 								printNode((Element) node);
+								FOUNDED = true;
 							} else
-								
+
 								break;
 						} else
 							break;
 					}
-					if (!isHaveAttr && levelChild == 0) {	
+					if (!isHaveAttr && levelChild == 0) {
 						KEY_FLAG = false;
 						if (checkChildExist1((Element) node, childTag)) {
 							printNode((Element) node);
+							FOUNDED = true;
 						} else
 							break;
 					}
 
 					if (isHaveAttr && levelChild != 0) {
-						
+
 						if (checkAttrMulti(attrsMap, setMap((Element) node), isOnlyAttr)) {
 							if (checkChildExist((Element) node, childTag, levelChild, false)) {
 								printNode((Element) node);
+								FOUNDED = true;
 								break;
 							} else {
 								continue;
@@ -289,9 +277,9 @@ public class NodeType extends Constant {
 
 					}
 					if (!isHaveAttr && levelChild != 0) {
-						
 						if (checkChildExist((Element) node, childTag, levelChild, false)) {
 							printNode((Element) node);
+							FOUNDED = true;
 							break;
 						} else {
 							continue;
@@ -305,7 +293,6 @@ public class NodeType extends Constant {
 				break;
 			}
 		}
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -345,15 +332,26 @@ public class NodeType extends Constant {
 		System.out.print(s);
 	}
 
-	@SuppressWarnings("static-access")
-	public static void main(String[] args) {
-		Map<String, String> testMap = new HashMap<String, String>();
-		NodeType f = new NodeType();
-		try {
-			f.parseXML("D:\\TMAProjects\\Search-Tool\\objects.xml", "Relation", "condition1", 0,
-					testMap, false, false);
-		} catch (Exception e) {
-			e.printStackTrace();
+	public static void exportXML(String path, boolean isOpen)
+			throws IOException, ParserConfigurationException, SAXException, JAXBException {
+		FileOutputStream f = new FileOutputStream(new File(path));
+		byte[] strTB = STR_BUILDER.toString().getBytes();
+		f.write(strTB);
+		f.close();
+		if (isOpen) {
+			Desktop desktop = Desktop.getDesktop();
+			desktop.open(new File(path));
 		}
 	}
+//	@SuppressWarnings("static-access")
+//	public static void main(String[] args) {
+//		Map<String, String> testMap = new HashMap<String, String>();
+//		NodeType f = new NodeType();
+//		try {
+//			f.parseXML("D:\\TMAProjects\\Search-Tool\\objects.xml", "Relation", "condition1", 0, testMap, false, false);
+//			exportXML();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 }
