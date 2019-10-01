@@ -330,6 +330,7 @@ public class FormMain1 extends NodeType {
 								validLvlInput(txtLevel.getText()), createMap(formatStr("")), false, ONLY_ATTR);
 						if(!FOUNDED) {
 							createMes(shell, "ERROR", "Not Found");
+							styledText.setText("");
 							return;
 						}
 						//toPrettyString(STR_BUILDER.toString(), 4);
@@ -358,6 +359,7 @@ public class FormMain1 extends NodeType {
 								ONLY_ATTR);
 						if(!FOUNDED) {
 							createMes(shell, "ERROR", "Not Found");
+							styledText.setText("");
 							return;
 						}
 						//toPrettyString(STR_BUILDER.toString(), 4);

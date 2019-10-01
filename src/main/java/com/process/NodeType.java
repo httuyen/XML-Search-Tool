@@ -86,7 +86,8 @@ public class NodeType extends Constant {
 		}
 		for (Map.Entry<String, String> entry : userMap.entrySet()) {
 			if (mapAt.containsKey(entry.getKey().toString())) {
-				if (mapAt.containsValue(entry.getValue().toString())) {
+				//mapAt.containsValue(entry.getValue().toString())
+				if (mapAt.get(entry.getKey()).equals(entry.getValue())) {
 					continue;
 				} else
 					return false;
