@@ -2,7 +2,6 @@ package com.ui;
 
 import java.io.IOException;
 
-import javax.swing.text.StyleContext.SmallAttributeSet;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -55,7 +54,7 @@ public class FormMain1 extends NodeType {
 	private Text txtFileName;
 	private Button btnURLOut;
 	private Text txtURLOut;
-	
+	//private Image small; 
 	/**
 	 * Launch the application.
 	 * 
@@ -75,7 +74,7 @@ public class FormMain1 extends NodeType {
 	 */
 	public void open() {
 		Display display = Display.getDefault();
-		Image small = new Image(display,"D:\\EclipseWorkspace\\Search-Tool\\images\\search.ico");
+		//small = new Image(display,"..\\Search-Tool\\images\\search.ico");
 		createContents();
 		shell.open();
 		shell.layout();
@@ -214,7 +213,7 @@ public class FormMain1 extends NodeType {
 		txtLevel.setBounds(286, 94, 29, 21);
 		txtLevel.setEnabled(false);
 		txtLevel.setText("0");
-		Button btnOpenA = new Button(group, SWT.CHECK);
+		final Button btnOpenA = new Button(group, SWT.CHECK);
 		btnOpenA.setBounds(20, 177, 195, 16);
 		btnOpenA.setText("Open when export complete");
 		btnOpenA.setEnabled(false);
