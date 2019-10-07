@@ -47,14 +47,21 @@ public class FormMain1 extends NodeType {
 	private Label lblChildTag;
 	private Text txtChildTag;
 	private Button btnOnlyChild;
-	private Group group;
+	private Group grS;
 	private Text txtLevel;
 	public static StyledText styledText;
 	private Label label;
 	private Text txtFileName;
 	private Button btnURLOut;
 	private Text txtURLOut;
-	//private Image small; 
+	private Group grF;
+	private Group grOK;
+	private Button btnFolder;
+	private Text txtFolder;
+	private Text text;
+	private Text text_1;
+
+	// private Image small;
 	/**
 	 * Launch the application.
 	 * 
@@ -74,7 +81,7 @@ public class FormMain1 extends NodeType {
 	 */
 	public void open() {
 		Display display = Display.getDefault();
-		//small = new Image(display,"..\\Search-Tool\\images\\search.ico");
+		// small = new Image(display,"..\\Search-Tool\\images\\search.ico");
 		createContents();
 		shell.open();
 		shell.layout();
@@ -90,20 +97,21 @@ public class FormMain1 extends NodeType {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(659, 595);
+		shell.setSize(843, 595);
 		shell.setText("Search Tool");
-		shell.setLayout(new GridLayout(1, false));
-		//shell.setImage(small);
+		shell.setLayout(new GridLayout(2, false));
+		// shell.setImage(small);
 
-		group = new Group(shell, SWT.NONE);
-		group.setLocation(5, -104);
-		GridData gd_group = new GridData(SWT.FILL, SWT.TOP, true, false, 1, 2);
-		gd_group.heightHint = 231;
-		gd_group.widthHint = 633;
-		group.setLayoutData(gd_group);
+		grS = new Group(shell, SWT.NONE);
+		grS.setText("Search Option");
+		grS.setLocation(5, -104);
+		GridData gd_grS = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		gd_grS.heightHint = 158;
+		gd_grS.widthHint = 440;
+		grS.setLayoutData(gd_grS);
 
-		Button btnOpenFile = new Button(group, SWT.NONE);
-		btnOpenFile.setBounds(10, 10, 62, 25);
+		Button btnOpenFile = new Button(grS, SWT.NONE);
+		btnOpenFile.setBounds(10, 26, 62, 25);
 		btnOpenFile.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -121,37 +129,33 @@ public class FormMain1 extends NodeType {
 		});
 		btnOpenFile.setText("Open File");
 
-		txtPath = new Text(group, SWT.BORDER);
-		txtPath.setBounds(77, 12, 238, 21);
+		txtPath = new Text(grS, SWT.BORDER);
+		txtPath.setBounds(77, 28, 297, 21);
 		txtPath.setEnabled(false);
 
-		lblParentTag = new Label(group, SWT.NONE);
-		lblParentTag.setBounds(10, 44, 63, 15);
+		lblParentTag = new Label(grS, SWT.NONE);
+		lblParentTag.setBounds(10, 60, 63, 15);
 		lblParentTag.setText("Parent Tag:");
 
-		lblChildTag = new Label(group, SWT.NONE);
-		lblChildTag.setBounds(20, 70, 53, 15);
+		lblChildTag = new Label(grS, SWT.NONE);
+		lblChildTag.setBounds(20, 86, 53, 15);
 		lblChildTag.setText("Child Tag:");
 
-		txtTagName = new Text(group, SWT.BORDER);
-		txtTagName.setBounds(78, 41, 237, 21);
+		txtTagName = new Text(grS, SWT.BORDER);
+		txtTagName.setBounds(78, 57, 93, 21);
 
-		txtChildTag = new Text(group, SWT.BORDER);
-		txtChildTag.setBounds(78, 67, 237, 21);
+		txtChildTag = new Text(grS, SWT.BORDER);
+		txtChildTag.setBounds(78, 83, 93, 21);
 
-		btnFind = new Button(group, SWT.NONE);
-		btnFind.setBounds(253, 211, 108, 25);
-		btnFind.setText("Find");
-
-		lblAttr = new Label(group, SWT.NONE);
-		lblAttr.setBounds(323, 44, 53, 15);
+		lblAttr = new Label(grS, SWT.NONE);
+		lblAttr.setBounds(177, 58, 53, 15);
 		lblAttr.setText("Attribute:");
 
-		txtAttri = new Text(group, SWT.BORDER);
-		txtAttri.setBounds(382, 41, 195, 21);
+		txtAttri = new Text(grS, SWT.BORDER);
+		txtAttri.setBounds(236, 55, 138, 21);
 
-		btnOnlyAttr = new Button(group, SWT.CHECK);
-		btnOnlyAttr.setBounds(583, 43, 46, 16);
+		btnOnlyAttr = new Button(grS, SWT.CHECK);
+		btnOnlyAttr.setBounds(380, 59, 46, 16);
 		btnOnlyAttr.setText("Only");
 		btnOnlyAttr.addSelectionListener(new SelectionListener() {
 
@@ -168,8 +172,8 @@ public class FormMain1 extends NodeType {
 			}
 		});
 
-		btnOnlyChild = new Button(group, SWT.CHECK);
-		btnOnlyChild.setBounds(50, 96, 138, 16);
+		btnOnlyChild = new Button(grS, SWT.CHECK);
+		btnOnlyChild.setBounds(50, 112, 138, 16);
 		btnOnlyChild.setText("Only (comming soon)");
 		btnOnlyChild.addSelectionListener(new SelectionListener() {
 
@@ -186,8 +190,8 @@ public class FormMain1 extends NodeType {
 			}
 		});
 		btnOnlyChild.setEnabled(false);
-		Button btnLevel = new Button(group, SWT.CHECK);
-		btnLevel.setBounds(194, 96, 93, 16);
+		Button btnLevel = new Button(grS, SWT.CHECK);
+		btnLevel.setBounds(50, 136, 93, 16);
 		btnLevel.setText("with level tag");
 		btnLevel.addSelectionListener(new SelectionListener() {
 			@Override
@@ -209,96 +213,70 @@ public class FormMain1 extends NodeType {
 			}
 		});
 
-		txtLevel = new Text(group, SWT.BORDER);
-		txtLevel.setBounds(286, 94, 29, 21);
+		txtLevel = new Text(grS, SWT.BORDER);
+		txtLevel.setBounds(142, 134, 29, 21);
 		txtLevel.setEnabled(false);
 		txtLevel.setText("0");
-		final Button btnOpenA = new Button(group, SWT.CHECK);
-		btnOpenA.setBounds(20, 177, 195, 16);
+
+		grF = new Group(shell, SWT.NONE);
+		grF.setText("Filter Option");
+		grF.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		//grF.setVisible(false);
+		
+		btnFolder = new Button(grF, SWT.NONE);
+		btnFolder.setBounds(10, 28, 88, 25);
+		btnFolder.setText("Choose Folder");
+
+		txtFolder = new Text(grF, SWT.BORDER);
+		txtFolder.setBounds(105, 32, 251, 21);
+		txtFolder.setEnabled(false);
+		Label lblNE = new Label(grF, SWT.NONE);
+		lblNE.setBounds(67, 66, 32, 15);
+		lblNE.setText("NE IP:");
+
+		Label lblAttriNE = new Label(grF, SWT.NONE);
+		lblAttriNE.setBounds(44, 91, 55, 15);
+		lblAttriNE.setText("Attribute:");
+
+		text = new Text(grF, SWT.BORDER);
+		text.setBounds(105, 63, 165, 21);
+
+		text_1 = new Text(grF, SWT.BORDER);
+		text_1.setBounds(105, 88, 165, 21);
+
+		grOK = new Group(shell, SWT.NONE);
+		GridData gd_grOK = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
+		gd_grOK.heightHint = 125;
+		grOK.setLayoutData(gd_grOK);
+		Button btnExportFile = new Button(grOK, SWT.CHECK);
+		btnExportFile.setBounds(69, 53, 93, 16);
+		btnExportFile.setText("Export File");
+		final Button btnOpenA = new Button(grOK, SWT.CHECK);
+		btnOpenA.setBounds(69, 75, 195, 16);
 		btnOpenA.setText("Open when export complete");
 		btnOpenA.setEnabled(false);
-		btnOpenA.addSelectionListener(new SelectionListener() {
 
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Button btn = (Button) e.getSource();
-				HAVE_OPEN = btn.getSelection();
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-		Button btnExportFile = new Button(group, SWT.CHECK);
-		btnExportFile.setBounds(20, 134, 93, 16);
-		btnExportFile.setText("Export File");
-		btnExportFile.addSelectionListener(new SelectionListener() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Button btn = (Button) e.getSource();
-				if (!btn.getSelection()) {
-					txtFileName.setEnabled(false);
-					label.setEnabled(false);
-					btnURLOut.setEnabled(false);
-					btnOpenA.setEnabled(false);
-				} else {
-					txtFileName.setEnabled(true);
-					label.setEnabled(true);
-					btnURLOut.setEnabled(true);
-					btnOpenA.setEnabled(true);
-				}
-				HAVE_EXPORT = btn.getSelection();
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		
-
-		label = new Label(group, SWT.NONE);
+		label = new Label(grOK, SWT.NONE);
+		label.setBounds(30, 27, 55, 15);
 		label.setText("File name:");
-		label.setBounds(121, 135, 55, 15);
 		label.setEnabled(false);
-		
-		txtFileName = new Text(group, SWT.BORDER);
-		txtFileName.setBounds(176, 132, 98, 21);
+
+		txtFileName = new Text(grOK, SWT.BORDER);
+		txtFileName.setBounds(85, 24, 98, 21);
 		txtFileName.setEnabled(false);
 
-		btnURLOut = new Button(group, SWT.NONE);
+		btnURLOut = new Button(grOK, SWT.NONE);
+		btnURLOut.setBounds(189, 22, 75, 25);
 		btnURLOut.setText("URL Output");
-		btnURLOut.setBounds(280, 130, 75, 25);
 		btnURLOut.setEnabled(false);
-		btnURLOut.addSelectionListener(new SelectionListener() {
 
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				DirectoryDialog dd = new DirectoryDialog(shell, SWT.OPEN);
-				dd.setText("Open");
-				dd.setFilterPath(SELECTED);
-				dd.setFilterPath("d:\\");
-				if ((URL_OUT = dd.open()) == null)
-					return;
-				else
-					txtURLOut.setText(URL_OUT);
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		txtURLOut = new Text(group, SWT.BORDER);
-		txtURLOut.setBounds(361, 132, 262, 21);
+		txtURLOut = new Text(grOK, SWT.BORDER);
+		txtURLOut.setBounds(270, 24, 262, 21);
 		txtURLOut.setEnabled(false);
+
+		btnFind = new Button(grOK, SWT.NONE);
+		btnFind.setBounds(156, 108, 108, 25);
+		btnFind.setText("OKE");
 
 		btnFind.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -327,16 +305,16 @@ public class FormMain1 extends NodeType {
 						STR_BUILDER.setLength(0);
 						parseXML(SELECTED, txtTagName.getText(), txtChildTag.getText(),
 								validLvlInput(txtLevel.getText()), createMap(formatStr("")), false, ONLY_ATTR);
-						if(!FOUNDED) {
+						if (!FOUNDED) {
 							createMes(shell, "ERROR", "Not Found");
 							styledText.setText("");
 							return;
 						}
-						//toPrettyString(STR_BUILDER.toString(), 4);
+						// toPrettyString(STR_BUILDER.toString(), 4);
 						styledText.setText(STR_BUILDER.toString());
-						if(HAVE_EXPORT) {
+						if (HAVE_EXPORT) {
 							exportXML(createURLOut(txtFileName.getText()), HAVE_OPEN);
-							if(!HAVE_OPEN) {
+							if (!HAVE_OPEN) {
 								createMes(shell, "NOTIFICATION", "Export complete!!!");
 							}
 						}
@@ -356,16 +334,16 @@ public class FormMain1 extends NodeType {
 						parseXML(SELECTED, txtTagName.getText(), txtChildTag.getText(),
 								validLvlInput(txtLevel.getText()), createMap(formatStr(txtAttri.getText())), true,
 								ONLY_ATTR);
-						if(!FOUNDED) {
+						if (!FOUNDED) {
 							createMes(shell, "ERROR", "Not Found");
 							styledText.setText("");
 							return;
 						}
-						//toPrettyString(STR_BUILDER.toString(), 4);
+						// toPrettyString(STR_BUILDER.toString(), 4);
 						styledText.setText(STR_BUILDER.toString());
-						if(HAVE_EXPORT) {
+						if (HAVE_EXPORT) {
 							exportXML(createURLOut(txtFileName.getText()), HAVE_OPEN);
-							if(!HAVE_OPEN) {
+							if (!HAVE_OPEN) {
 								createMes(shell, "NOTIFICATION", "Export complete!!!");
 							}
 						}
@@ -382,9 +360,68 @@ public class FormMain1 extends NodeType {
 
 			}
 		});
+		btnURLOut.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				DirectoryDialog dd = new DirectoryDialog(shell, SWT.OPEN);
+				dd.setText("Open");
+				dd.setFilterPath(SELECTED);
+				dd.setFilterPath("d:\\");
+				if ((URL_OUT = dd.open()) == null)
+					return;
+				else
+					txtURLOut.setText(URL_OUT);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		btnOpenA.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Button btn = (Button) e.getSource();
+				HAVE_OPEN = btn.getSelection();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		btnExportFile.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Button btn = (Button) e.getSource();
+				if (!btn.getSelection()) {
+					txtFileName.setEnabled(false);
+					label.setEnabled(false);
+					btnURLOut.setEnabled(false);
+					btnOpenA.setEnabled(false);
+				} else {
+					txtFileName.setEnabled(true);
+					label.setEnabled(true);
+					btnURLOut.setEnabled(true);
+					btnOpenA.setEnabled(true);
+				}
+				HAVE_EXPORT = btn.getSelection();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 
 		styledText = new StyledText(shell, SWT.BORDER | SWT.V_SCROLL | SWT.MULTI | SWT.H_SCROLL);
-		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
+		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
 		styledText.addLineStyleListener(new LineStyleListener() {
 

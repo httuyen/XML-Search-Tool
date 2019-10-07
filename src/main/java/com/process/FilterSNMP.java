@@ -20,12 +20,12 @@ public class FilterSNMP extends Constant {
 		try (BufferedReader br = Files.newBufferedReader(Paths.get(path))) {
 			while ((line = br.readLine()) != null) {
 				if (temp == 2) {
-					try { 
+					try {
 						if (checkIP(line, IP)) {
 							VALIDIP = true;
 						}
 					} catch (Exception e) {
-						
+
 					}
 				}
 				Object += line.toString() + "\n";
@@ -33,10 +33,11 @@ public class FilterSNMP extends Constant {
 					if (VALIDIP) {
 						sb.append(Object);
 					}
-					VALIDIP =false;
+					VALIDIP = false;
 					temp = 0;
 					Object = "";
-				}else temp++;
+				} else
+					temp++;
 			}
 
 		} catch (IOException e) {
