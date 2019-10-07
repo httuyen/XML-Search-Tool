@@ -98,7 +98,7 @@ public class FormMain1 extends NodeType {
 		group = new Group(shell, SWT.NONE);
 		group.setLocation(5, -104);
 		GridData gd_group = new GridData(SWT.FILL, SWT.TOP, true, false, 1, 2);
-		gd_group.heightHint = 228;
+		gd_group.heightHint = 231;
 		gd_group.widthHint = 633;
 		group.setLayoutData(gd_group);
 
