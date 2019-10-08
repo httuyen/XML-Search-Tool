@@ -12,7 +12,7 @@ public class FilterSNMP extends Constant {
 		readFile("D:\\notepad++\\snmpstracing.log", "135.249.41.67");
 	}
 
-	private static StringBuilder readFile(String path, String IP) {
+	public static StringBuilder readFile(String path, String IP) {
 		StringBuilder sb = new StringBuilder();
 		String line;
 		String Object = "";
@@ -43,7 +43,7 @@ public class FilterSNMP extends Constant {
 		} catch (IOException e) {
 			System.err.format("IOException: %s%n", e);
 		}
-		System.out.println(sb.toString());
+		//System.out.println(sb.toString());
 		return sb;
 	}
 

@@ -333,15 +333,15 @@ public class NodeType extends Constant {
 		System.out.print(s);
 	}
 
-	public static void exportXML(String path, boolean isOpen)
+	public static void exportXML(String pathOut,StringBuilder strEXP, boolean isOpen)
 			throws IOException, ParserConfigurationException, SAXException, JAXBException {
-		FileOutputStream f = new FileOutputStream(new File(path));
-		byte[] strTB = STR_BUILDER.toString().getBytes();
+		FileOutputStream f = new FileOutputStream(new File(pathOut));
+		byte[] strTB = strEXP.toString().getBytes();
 		f.write(strTB);
 		f.close();
 		if (isOpen) {
 			Desktop desktop = Desktop.getDesktop();
-			desktop.open(new File(path));
+			desktop.open(new File(pathOut));
 		}
 	}
 //	@SuppressWarnings("static-access")

@@ -1,6 +1,7 @@
 package com.ui;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,7 +19,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.GlyphMetrics;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -28,9 +28,13 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.xml.sax.SAXException;
 
+import com.constant.Constant;
+import com.process.FilterSNMP;
 import com.process.NodeType;
 
 public class FormMain1 extends NodeType {
@@ -41,7 +45,6 @@ public class FormMain1 extends NodeType {
 	private Label lblParentTag;
 	private Label lblAttr;
 	private Text txtAttri;
-	private Text txtResult;
 	private Button btnFind;
 	private Button btnOnlyAttr;
 	private Label lblChildTag;
@@ -50,7 +53,7 @@ public class FormMain1 extends NodeType {
 	private Group grS;
 	private Text txtLevel;
 	public static StyledText styledText;
-	private Label label;
+	private Label lblFileName;
 	private Text txtFileName;
 	private Button btnURLOut;
 	private Text txtURLOut;
@@ -58,8 +61,14 @@ public class FormMain1 extends NodeType {
 	private Group grOK;
 	private Button btnFolder;
 	private Text txtFolder;
-	private Text text;
-	private Text text_1;
+	private Text txtNE;
+	private Text txtAttrNE;
+	private TabItem tabS;
+	private TabItem tabF;
+	private Button btnExportFile;
+	private Button btnOpenA;
+	private Label lblFMS;
+	private Text txtFM;
 
 	// private Image small;
 	/**
@@ -79,6 +88,7 @@ public class FormMain1 extends NodeType {
 	/**
 	 * Open the window.
 	 */
+
 	public void open() {
 		Display display = Display.getDefault();
 		// small = new Image(display,"..\\Search-Tool\\images\\search.ico");
@@ -97,18 +107,54 @@ public class FormMain1 extends NodeType {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(843, 595);
+		shell.setSize(486, 595);
 		shell.setText("Search Tool");
 		shell.setLayout(new GridLayout(2, false));
+
+		final TabFolder tabFolder = new TabFolder(shell, SWT.NONE);
+		GridData gd_tabFolder = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
+		gd_tabFolder.heightHint = 175;
+		gd_tabFolder.widthHint = 418;
+		tabFolder.setLayoutData(gd_tabFolder);
+		tabFolder.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TAB_INDEX = tabFolder.getSelectionIndex();
+				if (TAB_INDEX == 1) {
+					if (btnExportFile == null)
+						System.out.println("null");
+					btnExportFile.setSelection(true);
+					btnExportFile.setEnabled(false);
+					setEnable(true);
+				} else {
+					try {
+						btnExportFile.setSelection(false);
+						btnExportFile.setEnabled(true);
+						setEnable(false);
+						lblFileName.setEnabled(false);
+						txtFileName.setEnabled(false);
+					} catch (Exception e2) {
+
+					}
+
+				}
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		tabS = new TabItem(tabFolder, SWT.NONE);
+		tabS.setText("Search");
 		// shell.setImage(small);
 
-		grS = new Group(shell, SWT.NONE);
-		grS.setText("Search Option");
+		grS = new Group(tabFolder, SWT.NONE);
+		tabS.setControl(grS);
 		grS.setLocation(5, -104);
-		GridData gd_grS = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-		gd_grS.heightHint = 158;
-		gd_grS.widthHint = 440;
-		grS.setLayoutData(gd_grS);
 
 		Button btnOpenFile = new Button(grS, SWT.NONE);
 		btnOpenFile.setBounds(10, 26, 62, 25);
@@ -218,48 +264,78 @@ public class FormMain1 extends NodeType {
 		txtLevel.setEnabled(false);
 		txtLevel.setText("0");
 
-		grF = new Group(shell, SWT.NONE);
-		grF.setText("Filter Option");
-		grF.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		//grF.setVisible(false);
-		
+		tabF = new TabItem(tabFolder, SWT.NONE);
+		tabF.setText("Filter");
+
+		grF = new Group(tabFolder, SWT.NONE);
+		tabF.setControl(grF);
+		grF.layout(false);
+
 		btnFolder = new Button(grF, SWT.NONE);
 		btnFolder.setBounds(10, 28, 88, 25);
 		btnFolder.setText("Choose Folder");
+		btnFolder.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				DirectoryDialog dd = new DirectoryDialog(shell, SWT.OPEN);
+				dd.setText("Open");
+				dd.setFilterPath(SELECTED);
+				dd.setFilterPath("d:\\");
+				if ((URL_FILTER = dd.open()) == null)
+					return;
+				else {
+					txtFolder.setText(URL_FILTER);
+					txtURLOut.setText(URL_FILTER);
+				}
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 
 		txtFolder = new Text(grF, SWT.BORDER);
 		txtFolder.setBounds(105, 32, 251, 21);
 		txtFolder.setEnabled(false);
 		Label lblNE = new Label(grF, SWT.NONE);
-		lblNE.setBounds(67, 66, 32, 15);
+		lblNE.setBounds(43, 107, 32, 15);
 		lblNE.setText("NE IP:");
 
 		Label lblAttriNE = new Label(grF, SWT.NONE);
-		lblAttriNE.setBounds(44, 91, 55, 15);
+		lblAttriNE.setBounds(43, 131, 55, 15);
 		lblAttriNE.setText("Attribute:");
 
-		text = new Text(grF, SWT.BORDER);
-		text.setBounds(105, 63, 165, 21);
+		txtNE = new Text(grF, SWT.BORDER);
+		txtNE.setBounds(123, 104, 165, 21);
 
-		text_1 = new Text(grF, SWT.BORDER);
-		text_1.setBounds(105, 88, 165, 21);
+		txtAttrNE = new Text(grF, SWT.BORDER);
+		txtAttrNE.setBounds(123, 128, 165, 21);
+
+		lblFMS = new Label(grF, SWT.NONE);
+		lblFMS.setBounds(43, 82, 62, 15);
+		lblFMS.setText("Format File:");
+
+		txtFM = new Text(grF, SWT.BORDER);
+		txtFM.setBounds(123, 79, 165, 21);
 
 		grOK = new Group(shell, SWT.NONE);
 		GridData gd_grOK = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
 		gd_grOK.heightHint = 125;
 		grOK.setLayoutData(gd_grOK);
-		Button btnExportFile = new Button(grOK, SWT.CHECK);
+		btnExportFile = new Button(grOK, SWT.CHECK);
 		btnExportFile.setBounds(69, 53, 93, 16);
 		btnExportFile.setText("Export File");
-		final Button btnOpenA = new Button(grOK, SWT.CHECK);
+		btnOpenA = new Button(grOK, SWT.CHECK);
 		btnOpenA.setBounds(69, 75, 195, 16);
 		btnOpenA.setText("Open when export complete");
 		btnOpenA.setEnabled(false);
 
-		label = new Label(grOK, SWT.NONE);
-		label.setBounds(30, 27, 55, 15);
-		label.setText("File name:");
-		label.setEnabled(false);
+		lblFileName = new Label(grOK, SWT.NONE);
+		lblFileName.setBounds(30, 27, 55, 15);
+		lblFileName.setText("File name:");
+		lblFileName.setEnabled(false);
 
 		txtFileName = new Text(grOK, SWT.BORDER);
 		txtFileName.setBounds(85, 24, 98, 21);
@@ -271,7 +347,7 @@ public class FormMain1 extends NodeType {
 		btnURLOut.setEnabled(false);
 
 		txtURLOut = new Text(grOK, SWT.BORDER);
-		txtURLOut.setBounds(270, 24, 262, 21);
+		txtURLOut.setBounds(270, 24, 175, 21);
 		txtURLOut.setEnabled(false);
 
 		btnFind = new Button(grOK, SWT.NONE);
@@ -281,81 +357,113 @@ public class FormMain1 extends NodeType {
 		btnFind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				FOUNDED = false;
-				if (txtPath.getText().isEmpty()) {
-					createMes(shell, "ERROR", "The file hasn't been opened !!!");
-					return;
-				}
-				if (txtTagName.getText().isEmpty()) {
-					createMes(shell, "ERROR", "Tag name can't empty !!!");
-					return;
-				}
-				if (HAVE_EXPORT) {
-					if (txtURLOut.getText().isEmpty()) {
-						createMes(shell, "ERROR", "Please choose the path of output");
-						return;
-					} else if (txtFileName.getText().isEmpty()) {
-						createMes(shell, "ERROR", "Output file can't be not empty!!!");
+				switch (TAB_INDEX) {
+				case 0:
+					FOUNDED = false;
+					if (txtPath.getText().isEmpty()) {
+						createMes(shell, "ERROR", "The file hasn't been opened !!!");
 						return;
 					}
-				}
-
-				if (txtAttri.getText().isEmpty()) {
-					try {
-						STR_BUILDER.setLength(0);
-						parseXML(SELECTED, txtTagName.getText(), txtChildTag.getText(),
-								validLvlInput(txtLevel.getText()), createMap(formatStr("")), false, ONLY_ATTR);
-						if (!FOUNDED) {
-							createMes(shell, "ERROR", "Not Found");
-							styledText.setText("");
+					if (txtTagName.getText().isEmpty()) {
+						createMes(shell, "ERROR", "Tag name can't empty !!!");
+						return;
+					}
+					if (HAVE_EXPORT) {
+						if (txtURLOut.getText().isEmpty()) {
+							createMes(shell, "ERROR", "Please choose the path of output");
+							return;
+						} else if (txtFileName.getText().isEmpty()) {
+							createMes(shell, "ERROR", "Output file can't be not empty!!!");
 							return;
 						}
-						// toPrettyString(STR_BUILDER.toString(), 4);
-						styledText.setText(STR_BUILDER.toString());
-						if (HAVE_EXPORT) {
-							exportXML(createURLOut(txtFileName.getText()), HAVE_OPEN);
-							if (!HAVE_OPEN) {
-								createMes(shell, "NOTIFICATION", "Export complete!!!");
-							}
-						}
-					} catch (ParserConfigurationException | SAXException | IOException | InterruptedException e1) {
-						e1.printStackTrace();
-					} catch (JAXBException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
 					}
 
-				} else {
-					try {
-						STR_BUILDER.setLength(0);
-						parseXML(SELECTED, txtTagName.getText(), txtChildTag.getText(),
-								validLvlInput(txtLevel.getText()), createMap(formatStr(txtAttri.getText())), true,
-								ONLY_ATTR);
-						if (!FOUNDED) {
-							createMes(shell, "ERROR", "Not Found");
-							styledText.setText("");
-							return;
+					if (txtAttri.getText().isEmpty()) {
+						try {
+							STR_BUILDER.setLength(0);
+							parseXML(SELECTED, txtTagName.getText(), txtChildTag.getText(),
+									validLvlInput(txtLevel.getText()), createMap(formatStr("")), false, ONLY_ATTR);
+							if (!FOUNDED) {
+								createMes(shell, "ERROR", "Not Found");
+								styledText.setText("");
+								return;
+							}
+							// toPrettyString(STR_BUILDER.toString(), 4);
+							styledText.setText(STR_BUILDER.toString());
+							if (HAVE_EXPORT) {
+								exportXML(createURLOut(txtFileName.getText()), STR_BUILDER, HAVE_OPEN);
+								if (!HAVE_OPEN) {
+									createMes(shell, "NOTIFICATION", "Export complete!!!");
+								}
+							}
+						} catch (ParserConfigurationException | SAXException | IOException | InterruptedException e1) {
+							e1.printStackTrace();
+						} catch (JAXBException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
-						// toPrettyString(STR_BUILDER.toString(), 4);
-						styledText.setText(STR_BUILDER.toString());
-						if (HAVE_EXPORT) {
-							exportXML(createURLOut(txtFileName.getText()), HAVE_OPEN);
-							if (!HAVE_OPEN) {
-								createMes(shell, "NOTIFICATION", "Export complete!!!");
+
+					} else {
+						try {
+							STR_BUILDER.setLength(0);
+							parseXML(SELECTED, txtTagName.getText(), txtChildTag.getText(),
+									validLvlInput(txtLevel.getText()), createMap(formatStr(txtAttri.getText())), true,
+									ONLY_ATTR);
+							if (!FOUNDED) {
+								createMes(shell, "ERROR", "Not Found");
+								styledText.setText("");
+								return;
+							}
+							// toPrettyString(STR_BUILDER.toString(), 4);
+							styledText.setText(STR_BUILDER.toString());
+							if (HAVE_EXPORT) {
+								exportXML(createURLOut(txtFileName.getText()), STR_BUILDER, HAVE_OPEN);
+								if (!HAVE_OPEN) {
+									createMes(shell, "NOTIFICATION", "Export complete!!!");
+								}
+							}
+						} catch (ParserConfigurationException | SAXException | IOException | InterruptedException e1) {
+							e1.printStackTrace();
+						} catch (JAXBException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+					break;
+				case 1:
+					if (txtFM.getText().isEmpty()) {
+						createMes(shell, "ERROR", "Format file can be not empty!!!");
+						return;
+					} else if (txtNE.getText().isEmpty()) {
+						createMes(shell, "ERROR", "NE IP can be not empty!!!");
+						return;
+					}
+
+					if (HAVE_EXPORT) {
+						List<String> lss = Constant.listFile(URL_FILTER, txtFM.getText()); 
+						for (String ls : lss) {
+							try {
+								exportXML(txtURLOut.getText()+"\\"+createPathFilter(ls), FilterSNMP.readFile(URL_FILTER+"\\"+ls, txtNE.getText()), HAVE_OPEN);
+								System.out.println(ls);
+							} catch (IOException | ParserConfigurationException | SAXException | JAXBException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
 							}
 						}
-					} catch (ParserConfigurationException | SAXException | IOException | InterruptedException e1) {
-						e1.printStackTrace();
-					} catch (JAXBException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+
+						if (!HAVE_OPEN) {
+							createMes(shell, "NOTIFICATION", "Export complete!!!");
+						}
 					}
+					break;
+				default:
+					break;
 				}
 
 			}
@@ -401,12 +509,12 @@ public class FormMain1 extends NodeType {
 				Button btn = (Button) e.getSource();
 				if (!btn.getSelection()) {
 					txtFileName.setEnabled(false);
-					label.setEnabled(false);
+					lblFileName.setEnabled(false);
 					btnURLOut.setEnabled(false);
 					btnOpenA.setEnabled(false);
 				} else {
 					txtFileName.setEnabled(true);
-					label.setEnabled(true);
+					lblFileName.setEnabled(true);
 					btnURLOut.setEnabled(true);
 					btnOpenA.setEnabled(true);
 				}
@@ -447,5 +555,14 @@ public class FormMain1 extends NodeType {
 //				}
 			}
 		});
+
+	}
+
+	public void setEnable(boolean bl) {
+		HAVE_EXPORT = bl;
+		lblFileName.setEnabled(!bl);
+		txtFileName.setEnabled(!bl);
+		btnURLOut.setEnabled(bl);
+		btnOpenA.setEnabled(bl);
 	}
 }

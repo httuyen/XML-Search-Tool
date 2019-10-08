@@ -1,19 +1,15 @@
 package com.constant;
 
 import java.io.ByteArrayInputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
+import java.io.File;
 import java.io.StringWriter;
-import java.lang.Character.UnicodeScript;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -30,15 +26,16 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.underscore.lodash.*;
 
 public class Constant {
 	public static int LEVEL_COUNT = 0;
 	public static int CHILD_COUNT = 0;
+	public static int TAB_INDEX = -1;
 	public static String SELECTED = "";
 	public static String URL_OUT = "";
 	public static String TEXT = "";
 	public static String xmlString = "";
+	public static String URL_FILTER= "";
 	public static boolean ONLY_ATTR = false;
 	public static boolean ONLY_CHILD = false;
 	public static boolean HAVE_LEVEL = false;
@@ -139,9 +136,28 @@ public class Constant {
 		String str = URL_OUT + "\\" + fileName.replaceAll("\\s+", "") + ".xml";
 		return str;
 	}
-
+	
+	public static ArrayList<String> listFile(String pathName,String formatFileName) {		
+		ArrayList<String> ls = new ArrayList<String>();
+		File f = new File(pathName);
+		File[] files = f.listFiles();
+        for(File file: files){
+        	if(file.getName().contains("Filtered_")) continue;
+        	if(file.getName().contains(formatFileName)) {
+                ls.add(file.getName());        		
+        	}
+        }
+		return ls;
+	}
+	
+	public static String createPathFilter (String path) {
+		return  "Filtered_" + path;
+	}
 //	public static void main(String[] args) {
-//		URL_OUT="D:\\TMAProjects\\Search-Tool\\objects.xml";
-//		System.out.println(createURLOut("  ok e.com"));
+////		URL_FILTER="D:\\notepad++";
+////		System.out.println(listFile(URL_FILTER,"snmpstracing.log" ));
+//		
+//		String str = "snmpstracing.lg.1";
+//		System.out.println(str.contains("snmpstracing.log"));
 //	}
 }
