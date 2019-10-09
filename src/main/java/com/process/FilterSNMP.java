@@ -6,46 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import com.constant.Constant;
-import com.sun.xml.internal.fastinfoset.util.ContiguousCharArrayArray;
 
 public class FilterSNMP extends Constant {
-	
-	
-//	public static StringBuilder readFile(String path, String IP) {
-//		StringBuilder sb = new StringBuilder();
-//		String line;
-//		String Object = "";
-//		int temp = 1;
-//		try {
-//			BufferedReader br = Files.newBufferedReader(Paths.get(path));
-//			while ((line = br.readLine()) != null) {
-//				if (temp == 2) {
-//					try {
-//						if (checkIP(line, IP)) {
-//							VALIDIP = true;
-//						}
-//					} catch (Exception e) {
-//
-//					}
-//				}
-//				Object += line.toString() + "\n";
-//				if (line.startsWith("-") && line.endsWith("-")) {
-//					if (VALIDIP) {
-//						sb.append(Object);
-//					}
-//					VALIDIP = false;
-//					temp = 0;
-//					Object = "";
-//				} else
-//					temp++;
-//			}
-//
-//		} catch (IOException e) {
-//			System.err.format("IOException: %s%n", e);
-//		}
-//		//System.out.println(sb.toString());
-//		return sb;
-//	}
 
 	public static StringBuilder readFileP(String path, String IP, String nesting, boolean isKeep) throws IOException {
 		StringBuilder sb = new StringBuilder();
@@ -106,7 +68,7 @@ public class FilterSNMP extends Constant {
 		
 		
 	}
-	public static void main(String[] args) throws IOException {
-		readFileP("D:\\notepad++\\mobject.log", "","452717",false);
-	}
+//	public static void main(String[] args) throws IOException {
+//		readFileP("D:\\notepad++\\mobject.log", "","452717",false);
+//	}
 }
