@@ -17,7 +17,8 @@ public class FilterSNMP extends Constant {
 		String line;
 		String Object = "";
 		int temp = 1;
-		try (BufferedReader br = Files.newBufferedReader(Paths.get(path))) {
+		try {
+			BufferedReader br = Files.newBufferedReader(Paths.get(path));
 			while ((line = br.readLine()) != null) {
 				if (temp == 2) {
 					try {

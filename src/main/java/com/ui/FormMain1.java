@@ -1,10 +1,8 @@
 package com.ui;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.Bullet;
@@ -31,12 +29,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
-import org.xml.sax.SAXException;
 
 import com.constant.Constant;
 import com.process.FilterSNMP;
 import com.process.NodeType;
 
+@SuppressWarnings("restriction")
 public class FormMain1 extends NodeType {
 
 	protected Shell shell;
@@ -116,9 +114,9 @@ public class FormMain1 extends NodeType {
 		gd_tabFolder.heightHint = 175;
 		gd_tabFolder.widthHint = 418;
 		tabFolder.setLayoutData(gd_tabFolder);
+		
 		tabFolder.addSelectionListener(new SelectionListener() {
-
-			@Override
+			
 			public void widgetSelected(SelectionEvent e) {
 				TAB_INDEX = tabFolder.getSelectionIndex();
 				if (TAB_INDEX == 1) {
@@ -139,12 +137,12 @@ public class FormMain1 extends NodeType {
 					}
 
 				}
+				
 			}
-
-			@Override
+			
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-
+				
 			}
 		});
 
@@ -203,45 +201,43 @@ public class FormMain1 extends NodeType {
 		btnOnlyAttr = new Button(grS, SWT.CHECK);
 		btnOnlyAttr.setBounds(380, 59, 46, 16);
 		btnOnlyAttr.setText("Only");
-		btnOnlyAttr.addSelectionListener(new SelectionListener() {
+		btnOnlyAttr.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				super.widgetSelected(e);
 				Button btn = (Button) e.getSource();
 				ONLY_ATTR = btn.getSelection();
 			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			
 		});
 
 		btnOnlyChild = new Button(grS, SWT.CHECK);
 		btnOnlyChild.setBounds(50, 112, 138, 16);
 		btnOnlyChild.setText("Only (comming soon)");
-		btnOnlyChild.addSelectionListener(new SelectionListener() {
+		btnOnlyChild.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				super.widgetSelected(e);
 				Button btn = (Button) e.getSource();
 				ONLY_CHILD = btn.getSelection();
 			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			
 		});
+		
 		btnOnlyChild.setEnabled(false);
 		Button btnLevel = new Button(grS, SWT.CHECK);
 		btnLevel.setBounds(50, 136, 93, 16);
 		btnLevel.setText("with level tag");
-		btnLevel.addSelectionListener(new SelectionListener() {
+		btnLevel.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				super.widgetSelected(e);
 				Button btn = (Button) e.getSource();
 				HAVE_LEVEL = btn.getSelection();
 				if (btn.getSelection()) {
@@ -251,12 +247,7 @@ public class FormMain1 extends NodeType {
 					txtLevel.setEnabled(false);
 				}
 			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			
 		});
 
 		txtLevel = new Text(grS, SWT.BORDER);
@@ -274,9 +265,12 @@ public class FormMain1 extends NodeType {
 		btnFolder = new Button(grF, SWT.NONE);
 		btnFolder.setBounds(10, 28, 88, 25);
 		btnFolder.setText("Choose Folder");
-		btnFolder.addSelectionListener(new SelectionListener() {
+		btnFolder.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				super.widgetSelected(e);
 				DirectoryDialog dd = new DirectoryDialog(shell, SWT.OPEN);
 				dd.setText("Open");
 				dd.setFilterPath(SELECTED);
@@ -288,12 +282,7 @@ public class FormMain1 extends NodeType {
 					txtURLOut.setText(URL_FILTER);
 				}
 			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			
 		});
 
 		txtFolder = new Text(grF, SWT.BORDER);
@@ -396,9 +385,8 @@ public class FormMain1 extends NodeType {
 									createMes(shell, "NOTIFICATION", "Export complete!!!");
 								}
 							}
-						} catch (ParserConfigurationException | SAXException | IOException | InterruptedException e1) {
-							e1.printStackTrace();
-						} catch (JAXBException e1) {
+						}
+						 catch (JAXBException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						} catch (Exception e1) {
@@ -425,8 +413,7 @@ public class FormMain1 extends NodeType {
 									createMes(shell, "NOTIFICATION", "Export complete!!!");
 								}
 							}
-						} catch (ParserConfigurationException | SAXException | IOException | InterruptedException e1) {
-							e1.printStackTrace();
+						
 						} catch (JAXBException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -451,7 +438,7 @@ public class FormMain1 extends NodeType {
 							try {
 								exportXML(txtURLOut.getText()+"\\"+createPathFilter(ls), FilterSNMP.readFile(URL_FILTER+"\\"+ls, txtNE.getText()), HAVE_OPEN);
 								System.out.println(ls);
-							} catch (IOException | ParserConfigurationException | SAXException | JAXBException e1) {
+							} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
@@ -468,11 +455,12 @@ public class FormMain1 extends NodeType {
 
 			}
 		});
-		btnURLOut.addSelectionListener(new SelectionListener() {
-
+		
+		btnURLOut.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
+				super.widgetSelected(e);
 				DirectoryDialog dd = new DirectoryDialog(shell, SWT.OPEN);
 				dd.setText("Open");
 				dd.setFilterPath(SELECTED);
@@ -482,30 +470,26 @@ public class FormMain1 extends NodeType {
 				else
 					txtURLOut.setText(URL_OUT);
 			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
 		});
-		btnOpenA.addSelectionListener(new SelectionListener() {
+		
+		btnOpenA.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				super.widgetSelected(e);
 				Button btn = (Button) e.getSource();
 				HAVE_OPEN = btn.getSelection();
 			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			
 		});
-		btnExportFile.addSelectionListener(new SelectionListener() {
+		
+		btnExportFile.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				super.widgetSelected(e);
 				Button btn = (Button) e.getSource();
 				if (!btn.getSelection()) {
 					txtFileName.setEnabled(false);
@@ -520,20 +504,15 @@ public class FormMain1 extends NodeType {
 				}
 				HAVE_EXPORT = btn.getSelection();
 			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			
 		});
+		
 
 		styledText = new StyledText(shell, SWT.BORDER | SWT.V_SCROLL | SWT.MULTI | SWT.H_SCROLL);
 		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-
+		
 		styledText.addLineStyleListener(new LineStyleListener() {
-
-			@Override
+			
 			public void lineGetStyle(LineStyleEvent event) {
 				StyleRange styleRange = new StyleRange();
 				styleRange.foreground = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
@@ -547,7 +526,7 @@ public class FormMain1 extends NodeType {
 			}
 		});
 		styledText.addModifyListener(new ModifyListener() {
-			@Override
+			
 			public void modifyText(ModifyEvent e) {
 				// styledText.redraw();
 //				for(int i = 0;i<=90;i++) {
@@ -555,7 +534,6 @@ public class FormMain1 extends NodeType {
 //				}
 			}
 		});
-
 	}
 
 	public void setEnable(boolean bl) {
