@@ -60,13 +60,13 @@ public class FormMain1 extends NodeType {
 	private Button btnFolder;
 	private Text txtFolder;
 	private Text txtNE;
-	private Text txtAttrNE;
 	private TabItem tabS;
 	private TabItem tabF;
 	private Button btnExportFile;
 	private Button btnOpenA;
 	private Label lblFMS;
 	private Text txtFM;
+	private Text txtNesting;
 
 	// private Image small;
 	/**
@@ -289,26 +289,41 @@ public class FormMain1 extends NodeType {
 		txtFolder.setBounds(105, 32, 251, 21);
 		txtFolder.setEnabled(false);
 		Label lblNE = new Label(grF, SWT.NONE);
-		lblNE.setBounds(43, 107, 32, 15);
+		lblNE.setBounds(43, 89, 32, 15);
 		lblNE.setText("NE IP:");
 
-		Label lblAttriNE = new Label(grF, SWT.NONE);
-		lblAttriNE.setBounds(43, 131, 55, 15);
-		lblAttriNE.setText("Attribute:");
-
 		txtNE = new Text(grF, SWT.BORDER);
-		txtNE.setBounds(123, 104, 165, 21);
-
-		txtAttrNE = new Text(grF, SWT.BORDER);
-		txtAttrNE.setBounds(123, 128, 165, 21);
+		txtNE.setBounds(123, 86, 165, 21);
 
 		lblFMS = new Label(grF, SWT.NONE);
-		lblFMS.setBounds(43, 82, 62, 15);
+		lblFMS.setBounds(43, 62, 62, 15);
 		lblFMS.setText("Format File:");
 
 		txtFM = new Text(grF, SWT.BORDER);
-		txtFM.setBounds(123, 79, 165, 21);
+		txtFM.setBounds(123, 59, 165, 21);
+		
+		Label lblNesting = new Label(grF, SWT.NONE);
+		lblNesting.setBounds(43, 114, 55, 15);
+		lblNesting.setText("Nesting:");
+		
+		txtNesting = new Text(grF, SWT.BORDER);
+		txtNesting.setBounds(123, 110, 165, 21);
+		
+		Button cbKeepNesting = new Button(grF, SWT.CHECK);
+		cbKeepNesting.setBounds(305, 114, 55, 16);
+		cbKeepNesting.setText("Keep");
+		cbKeepNesting.addSelectionListener(new SelectionAdapter() {
 
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				super.widgetSelected(e);
+				Button btn = (Button) e.getSource();
+				IS_KEEP = btn.getSelection();				
+			}
+			
+		});
+		
 		grOK = new Group(shell, SWT.NONE);
 		GridData gd_grOK = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
 		gd_grOK.heightHint = 125;
@@ -424,11 +439,14 @@ public class FormMain1 extends NodeType {
 					}
 					break;
 				case 1:
-					if (txtFM.getText().isEmpty()) {
+					if(txtFolder.getText().isEmpty()) {
+						createMes(shell, "ERROR", "Please choose folder input!!!");
+						return;
+					}else if (txtFM.getText().isEmpty()) {
 						createMes(shell, "ERROR", "Format file can be not empty!!!");
 						return;
-					} else if (txtNE.getText().isEmpty()) {
-						createMes(shell, "ERROR", "NE IP can be not empty!!!");
+					} else if (txtNE.getText().isEmpty() && txtNesting.getText().isEmpty()) {
+						createMes(shell, "ERROR", "Only one NE IP or Nesting  can be empty!!!");
 						return;
 					}
 
@@ -436,8 +454,8 @@ public class FormMain1 extends NodeType {
 						List<String> lss = Constant.listFile(URL_FILTER, txtFM.getText()); 
 						for (String ls : lss) {
 							try {
-								exportXML(txtURLOut.getText()+"\\"+createPathFilter(ls), FilterSNMP.readFile(URL_FILTER+"\\"+ls, txtNE.getText()), HAVE_OPEN);
-								System.out.println(ls);
+								exportXML(txtURLOut.getText()+"\\"+createPathFilter(ls), FilterSNMP.readFileP(URL_FILTER+"\\"+ls, txtNE.getText(),txtNesting.getText(),IS_KEEP), HAVE_OPEN);
+								//System.out.println(ls);
 							} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
