@@ -59,14 +59,6 @@ public class FilterSNMP extends Constant {
 				}
 			}else return true;
 		}else return false;
-		//String s[] = str.split(" ");
-		//s = s[4].split("/");
-		//if (IPInput.equals(s[0].toString())) {
-		//	return true;
-		//} else
-		//	return false;
-		
-		
 	}
 //	public static void main(String[] args) throws IOException {
 //		readFileP("D:\\notepad++\\mobject.log", "","452717",false);

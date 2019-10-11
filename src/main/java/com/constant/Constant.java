@@ -18,6 +18,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom2.Document;
@@ -28,6 +29,7 @@ import org.xml.sax.InputSource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Constant {
+	public static Image ICON =  new Image(null, ".\\src\\images\\search.ico");
 	public static int LEVEL_COUNT = 0;
 	public static int CHILD_COUNT = 0;
 	public static int TAB_INDEX = -1;

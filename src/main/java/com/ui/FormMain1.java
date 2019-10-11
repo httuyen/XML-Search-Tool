@@ -34,7 +34,6 @@ import com.constant.Constant;
 import com.process.FilterSNMP;
 import com.process.NodeType;
 
-@SuppressWarnings("restriction")
 public class FormMain1 extends NodeType {
 
 	protected Shell shell;
@@ -108,7 +107,7 @@ public class FormMain1 extends NodeType {
 		shell.setSize(486, 595);
 		shell.setText("Search Tool");
 		shell.setLayout(new GridLayout(2, false));
-
+		shell.setImage(ICON);
 		final TabFolder tabFolder = new TabFolder(shell, SWT.NONE);
 		GridData gd_tabFolder = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
 		gd_tabFolder.heightHint = 175;
@@ -125,11 +124,13 @@ public class FormMain1 extends NodeType {
 					btnExportFile.setSelection(true);
 					btnExportFile.setEnabled(false);
 					setEnable(true);
+					
 				} else {
 					try {
 						btnExportFile.setSelection(false);
 						btnExportFile.setEnabled(true);
 						setEnable(false);
+						btnOpenA.setEnabled(false);
 						lblFileName.setEnabled(false);
 						txtFileName.setEnabled(false);
 					} catch (Exception e2) {
@@ -559,6 +560,6 @@ public class FormMain1 extends NodeType {
 		lblFileName.setEnabled(!bl);
 		txtFileName.setEnabled(!bl);
 		btnURLOut.setEnabled(bl);
-		btnOpenA.setEnabled(bl);
+		btnOpenA.setEnabled(!bl);
 	}
 }
