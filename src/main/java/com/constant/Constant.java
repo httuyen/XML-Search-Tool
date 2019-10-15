@@ -46,8 +46,11 @@ public class Constant {
 	public static boolean HAVE_EXPORT = false;
 	public static boolean FOUNDED = false;
 	public static boolean VALIDIP = false;
+	public static boolean VALID_EST = false;
+	public static boolean VALID_VARBD = false;	
 	public static boolean SEARCH_OPTION = true;
-	public static boolean IS_KEEP = false;
+	public static boolean IS_KEEP_N = false;
+	public static boolean IS_KEEP_VB = false;
 	public static String LINE_NUMBER_KEY_NAME = "lineNumber";
 	public static ObjectMapper OBJ = new ObjectMapper();
 	protected static Map<String, String> mapAttr = new HashMap<String, String>();

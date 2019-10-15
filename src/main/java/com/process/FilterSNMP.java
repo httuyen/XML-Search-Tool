@@ -9,7 +9,8 @@ import com.constant.Constant;
 
 public class FilterSNMP extends Constant {
 
-	public static StringBuilder readFileP(String path, String IP, String nesting, boolean isKeep) throws IOException {
+	public static StringBuilder readFileP(String path, String IP, String nesting, String varBinding, String errorS,
+			boolean isKeepN, boolean isKeepVB) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		String line;
 		String Object = "";
@@ -18,49 +19,80 @@ public class FilterSNMP extends Constant {
 		try {
 			while ((line = br.readLine()) != null) {
 				if (temp == 2) {
-					try {
-						if (checkIP(line, IP, nesting, isKeep )) {
-							VALIDIP = true;
-						}
-					} catch (Exception e) {
-
+					VALIDIP = checkIP(line, IP, nesting, isKeepN);
+				}
+				if(temp > 3) {
+					if (!VALID_VARBD) {
+						VALID_VARBD = checkVB(line, varBinding, isKeepVB);
 					}
+					if (!VALID_EST) {
+						VALID_EST = checkEST(line, errorS);
+					}					
 				}
 				Object += line.toString() + "\n";
-				
-				//if (line.startsWith(" ") && line.endsWith(" ")) {
 				if (line.isEmpty()) {
-					if (VALIDIP) {
+					if (VALIDIP && VALID_EST && VALID_VARBD) {
 						sb.append(Object);
 					}
 					VALIDIP = false;
+					VALID_EST = false;
+					VALID_VARBD = false;
 					temp = 1;
 					Object = "";
 				} else
 					temp++;
 			}
-
 		} catch (IOException e) {
 			System.err.format("IOException: %s%n", e);
 		}
-		//System.out.println(sb.toString());
 		return sb;
 	}
-	
-	private static boolean checkIP(String str, String IPInput, String nesting, boolean isKeep) {
-		if(str.contains(IPInput) || IPInput == "") {
-			if(nesting == "") return true;
-			if(str.contains(nesting)) {
-				if(isKeep) {
-					
+
+	private static boolean checkVB(String str, String varBinding, boolean isKeepVB) {
+		if(varBinding == "") return true;
+		str = str.replaceAll("\\s+", "-");
+		String s[] = {};
+		try {
+			s = str.split("="); 
+			s = s[1].split("-");
+			
+		}catch (Exception e) {
+			return false;
+		}
+		if (s[1].equals(varBinding)) {
+			if (isKeepVB) {
+				return true;
+			} else
+				return false;
+		} else
+			return false;
+	}
+
+	private static boolean checkEST(String str, String errorStatus) {
+		if (str.contains(errorStatus) || errorStatus == "") {
+			return true;
+		} else
+			return false;
+	}
+
+	private static boolean checkIP(String str, String IPInput, String nesting, boolean isKeepN) {
+		if (str.contains(IPInput) || IPInput == "") {
+			if (nesting == "")
+				return true;
+			if (str.contains(nesting)) {
+				if (isKeepN) {
+
 					return true;
-				}else {
+				} else {
 					return false;
 				}
-			}else return true;
-		}else return false;
+			} else
+				return true;
+		} else
+			return false;
 	}
-//	public static void main(String[] args) throws IOException {
-//		readFileP("D:\\notepad++\\mobject.log", "","452717",false);
-//	}
+
+	public static void main(String[] args) throws IOException {
+		System.out.println(readFileP("D:\\notepad++\\snmptracing.log", "135.249.41.16", "452717", "40", "noError", true, true));
+	}
 }

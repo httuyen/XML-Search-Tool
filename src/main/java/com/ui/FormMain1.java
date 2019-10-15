@@ -66,6 +66,8 @@ public class FormMain1 extends NodeType {
 	private Label lblFMS;
 	private Text txtFM;
 	private Text txtNesting;
+	private Text txtVB;
+	private Text txtES;
 
 	// private Image small;
 	/**
@@ -88,7 +90,6 @@ public class FormMain1 extends NodeType {
 
 	public void open() {
 		Display display = Display.getDefault();
-		// small = new Image(display,"..\\Search-Tool\\images\\search.ico");
 		createContents();
 		shell.open();
 		shell.layout();
@@ -107,15 +108,16 @@ public class FormMain1 extends NodeType {
 		shell.setSize(486, 595);
 		shell.setText("Search Tool");
 		shell.setLayout(new GridLayout(2, false));
-		shell.setImage(ICON);
+		// shell.setImage(ICON);
 		final TabFolder tabFolder = new TabFolder(shell, SWT.NONE);
+		tabFolder.setLocation(-4, -22);
 		GridData gd_tabFolder = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
-		gd_tabFolder.heightHint = 175;
+		gd_tabFolder.heightHint = 252;
 		gd_tabFolder.widthHint = 418;
 		tabFolder.setLayoutData(gd_tabFolder);
-		
+
 		tabFolder.addSelectionListener(new SelectionListener() {
-			
+
 			public void widgetSelected(SelectionEvent e) {
 				TAB_INDEX = tabFolder.getSelectionIndex();
 				if (TAB_INDEX == 1) {
@@ -124,7 +126,7 @@ public class FormMain1 extends NodeType {
 					btnExportFile.setSelection(true);
 					btnExportFile.setEnabled(false);
 					setEnable(true);
-					
+
 				} else {
 					try {
 						btnExportFile.setSelection(false);
@@ -138,12 +140,12 @@ public class FormMain1 extends NodeType {
 					}
 
 				}
-				
+
 			}
-			
+
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
@@ -211,7 +213,7 @@ public class FormMain1 extends NodeType {
 				Button btn = (Button) e.getSource();
 				ONLY_ATTR = btn.getSelection();
 			}
-			
+
 		});
 
 		btnOnlyChild = new Button(grS, SWT.CHECK);
@@ -226,9 +228,9 @@ public class FormMain1 extends NodeType {
 				Button btn = (Button) e.getSource();
 				ONLY_CHILD = btn.getSelection();
 			}
-			
+
 		});
-		
+
 		btnOnlyChild.setEnabled(false);
 		Button btnLevel = new Button(grS, SWT.CHECK);
 		btnLevel.setBounds(50, 136, 93, 16);
@@ -248,7 +250,7 @@ public class FormMain1 extends NodeType {
 					txtLevel.setEnabled(false);
 				}
 			}
-			
+
 		});
 
 		txtLevel = new Text(grS, SWT.BORDER);
@@ -283,36 +285,66 @@ public class FormMain1 extends NodeType {
 					txtURLOut.setText(URL_FILTER);
 				}
 			}
-			
+
 		});
 
 		txtFolder = new Text(grF, SWT.BORDER);
 		txtFolder.setBounds(105, 32, 251, 21);
 		txtFolder.setEnabled(false);
 		Label lblNE = new Label(grF, SWT.NONE);
-		lblNE.setBounds(43, 89, 32, 15);
+		lblNE.setBounds(51, 89, 32, 15);
 		lblNE.setText("NE IP:");
 
 		txtNE = new Text(grF, SWT.BORDER);
 		txtNE.setBounds(123, 86, 165, 21);
 
 		lblFMS = new Label(grF, SWT.NONE);
-		lblFMS.setBounds(43, 62, 62, 15);
+		lblFMS.setBounds(51, 64, 62, 15);
 		lblFMS.setText("Format File:");
 
 		txtFM = new Text(grF, SWT.BORDER);
-		txtFM.setBounds(123, 59, 165, 21);
-		
+		txtFM.setBounds(123, 61, 165, 21);
+
 		Label lblNesting = new Label(grF, SWT.NONE);
-		lblNesting.setBounds(43, 114, 55, 15);
+		lblNesting.setBounds(51, 114, 55, 15);
 		lblNesting.setText("Nesting:");
-		
+
 		txtNesting = new Text(grF, SWT.BORDER);
 		txtNesting.setBounds(123, 110, 165, 21);
-		
+
 		Button cbKeepNesting = new Button(grF, SWT.CHECK);
-		cbKeepNesting.setBounds(305, 114, 55, 16);
+		cbKeepNesting.setBounds(293, 112, 55, 16);
 		cbKeepNesting.setText("Keep");
+
+		Label lblVB = new Label(grF, SWT.NONE);
+		lblVB.setBounds(51, 153, 62, 15);
+		lblVB.setText("Variable BD:");
+
+		txtVB = new Text(grF, SWT.BORDER);
+		txtVB.setBounds(123, 147, 165, 21);
+
+		Button cbKeepVB = new Button(grF, SWT.CHECK);
+		cbKeepVB.setBounds(293, 150, 47, 16);
+		cbKeepVB.setText("Keep");
+		cbKeepVB.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				super.widgetSelected(e);
+				Button btn = (Button) e.getSource();
+				IS_KEEP_VB = btn.getSelection();
+			}
+			
+		});
+		
+		
+		Label lblES = new Label(grF, SWT.NONE);
+		lblES.setBounds(51, 178, 67, 15);
+		lblES.setText("Error Status:");
+
+		txtES = new Text(grF, SWT.BORDER);
+		txtES.setBounds(123, 174, 165, 21);
 		cbKeepNesting.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -320,11 +352,10 @@ public class FormMain1 extends NodeType {
 				// TODO Auto-generated method stub
 				super.widgetSelected(e);
 				Button btn = (Button) e.getSource();
-				IS_KEEP = btn.getSelection();				
+				IS_KEEP_N = btn.getSelection();
 			}
-			
 		});
-		
+
 		grOK = new Group(shell, SWT.NONE);
 		GridData gd_grOK = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
 		gd_grOK.heightHint = 125;
@@ -401,8 +432,7 @@ public class FormMain1 extends NodeType {
 									createMes(shell, "NOTIFICATION", "Export complete!!!");
 								}
 							}
-						}
-						 catch (JAXBException e1) {
+						} catch (JAXBException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						} catch (Exception e1) {
@@ -429,7 +459,7 @@ public class FormMain1 extends NodeType {
 									createMes(shell, "NOTIFICATION", "Export complete!!!");
 								}
 							}
-						
+
 						} catch (JAXBException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -440,10 +470,10 @@ public class FormMain1 extends NodeType {
 					}
 					break;
 				case 1:
-					if(txtFolder.getText().isEmpty()) {
+					if (txtFolder.getText().isEmpty()) {
 						createMes(shell, "ERROR", "Please choose folder input!!!");
 						return;
-					}else if (txtFM.getText().isEmpty()) {
+					} else if (txtFM.getText().isEmpty()) {
 						createMes(shell, "ERROR", "Format file can be not empty!!!");
 						return;
 					} else if (txtNE.getText().isEmpty() && txtNesting.getText().isEmpty()) {
@@ -452,11 +482,14 @@ public class FormMain1 extends NodeType {
 					}
 
 					if (HAVE_EXPORT) {
-						List<String> lss = Constant.listFile(URL_FILTER, txtFM.getText()); 
+						List<String> lss = Constant.listFile(URL_FILTER, txtFM.getText());
 						for (String ls : lss) {
 							try {
-								exportXML(txtURLOut.getText()+"\\"+createPathFilter(ls), FilterSNMP.readFileP(URL_FILTER+"\\"+ls, txtNE.getText(),txtNesting.getText(),IS_KEEP), HAVE_OPEN);
-								//System.out.println(ls);
+								exportXML(txtURLOut.getText() + "\\" + createPathFilter(ls),
+										FilterSNMP.readFileP(URL_FILTER + "\\" + ls, txtNE.getText(),
+												txtNesting.getText(),txtVB.getText(),txtES.getText(), IS_KEEP_N, IS_KEEP_VB),
+										HAVE_OPEN);
+								// System.out.println(ls);
 							} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -474,7 +507,7 @@ public class FormMain1 extends NodeType {
 
 			}
 		});
-		
+
 		btnURLOut.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -490,7 +523,7 @@ public class FormMain1 extends NodeType {
 					txtURLOut.setText(URL_OUT);
 			}
 		});
-		
+
 		btnOpenA.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -500,9 +533,9 @@ public class FormMain1 extends NodeType {
 				Button btn = (Button) e.getSource();
 				HAVE_OPEN = btn.getSelection();
 			}
-			
+
 		});
-		
+
 		btnExportFile.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -523,15 +556,14 @@ public class FormMain1 extends NodeType {
 				}
 				HAVE_EXPORT = btn.getSelection();
 			}
-			
+
 		});
-		
 
 		styledText = new StyledText(shell, SWT.BORDER | SWT.V_SCROLL | SWT.MULTI | SWT.H_SCROLL);
 		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		
+
 		styledText.addLineStyleListener(new LineStyleListener() {
-			
+
 			public void lineGetStyle(LineStyleEvent event) {
 				StyleRange styleRange = new StyleRange();
 				styleRange.foreground = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
@@ -545,12 +577,7 @@ public class FormMain1 extends NodeType {
 			}
 		});
 		styledText.addModifyListener(new ModifyListener() {
-			
 			public void modifyText(ModifyEvent e) {
-				// styledText.redraw();
-//				for(int i = 0;i<=90;i++) {
-//					styledText.append("\n");	
-//				}
 			}
 		});
 	}
