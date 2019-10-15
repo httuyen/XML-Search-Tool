@@ -92,7 +92,8 @@ public class FilterSNMP extends Constant {
 			return false;
 	}
 
-	public static void main(String[] args) throws IOException {
-		System.out.println(readFileP("D:\\notepad++\\snmptracing.log", "135.249.41.16", "452717", "40", "noError", true, true));
-	}
+	
+//	public static void main(String[] args) throws IOException {
+//		//System.out.println(readFileP("D:\\notepad++\\snmptracing.log", "135.249.41.16", "452717", "40", "noError", true, true));\
+//	}
 }

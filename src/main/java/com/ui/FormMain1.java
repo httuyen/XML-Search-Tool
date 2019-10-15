@@ -112,7 +112,7 @@ public class FormMain1 extends NodeType {
 		final TabFolder tabFolder = new TabFolder(shell, SWT.NONE);
 		tabFolder.setLocation(-4, -22);
 		GridData gd_tabFolder = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
-		gd_tabFolder.heightHint = 252;
+		gd_tabFolder.heightHint = 205;
 		gd_tabFolder.widthHint = 418;
 		tabFolder.setLayoutData(gd_tabFolder);
 
@@ -195,7 +195,7 @@ public class FormMain1 extends NodeType {
 		txtChildTag.setBounds(78, 83, 93, 21);
 
 		lblAttr = new Label(grS, SWT.NONE);
-		lblAttr.setBounds(177, 58, 53, 15);
+		lblAttr.setBounds(180, 58, 53, 15);
 		lblAttr.setText("Attribute:");
 
 		txtAttri = new Text(grS, SWT.BORDER);
@@ -289,7 +289,7 @@ public class FormMain1 extends NodeType {
 		});
 
 		txtFolder = new Text(grF, SWT.BORDER);
-		txtFolder.setBounds(105, 32, 251, 21);
+		txtFolder.setBounds(104, 30, 251, 21);
 		txtFolder.setEnabled(false);
 		Label lblNE = new Label(grF, SWT.NONE);
 		lblNE.setBounds(51, 89, 32, 15);
@@ -387,7 +387,7 @@ public class FormMain1 extends NodeType {
 		txtURLOut.setEnabled(false);
 
 		btnFind = new Button(grOK, SWT.NONE);
-		btnFind.setBounds(156, 108, 108, 25);
+		btnFind.setBounds(171, 108, 108, 25);
 		btnFind.setText("OKE");
 
 		btnFind.addSelectionListener(new SelectionAdapter() {
@@ -434,9 +434,11 @@ public class FormMain1 extends NodeType {
 							}
 						} catch (JAXBException e1) {
 							// TODO Auto-generated catch block
+							createMes(shell, "Error", "Input invalid");
 							e1.printStackTrace();
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
+							createMes(shell, "Error", "Input invalid");
 							e1.printStackTrace();
 						}
 
@@ -462,9 +464,11 @@ public class FormMain1 extends NodeType {
 
 						} catch (JAXBException e1) {
 							// TODO Auto-generated catch block
+							createMes(shell, "Error", "Input invalid");
 							e1.printStackTrace();
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
+							createMes(shell, "Error", "Input invalid");
 							e1.printStackTrace();
 						}
 					}
@@ -492,6 +496,7 @@ public class FormMain1 extends NodeType {
 								// System.out.println(ls);
 							} catch (Exception e1) {
 								// TODO Auto-generated catch block
+								createMes(shell, "Error", "Input invalid");
 								e1.printStackTrace();
 							}
 						}

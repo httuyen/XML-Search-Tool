@@ -125,9 +125,7 @@ public class Constant {
 				attr = attrs[i].split("=");
 				map.put(attr[0], attr[1]);
 			}
-
 			return map;
-
 		}
 	}
 
