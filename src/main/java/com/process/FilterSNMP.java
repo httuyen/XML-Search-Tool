@@ -18,19 +18,28 @@ public class FilterSNMP extends Constant {
 		BufferedReader br = Files.newBufferedReader(Paths.get(path));
 		try {
 			while ((line = br.readLine()) != null) {
+				
 				if (temp == 2) {
 					VALIDIP = checkIP(line, IP, nesting, isKeepN);
 				}
-				if(temp > 3) {
+				if (temp > 3) {
 					if (!VALID_VARBD) {
-						VALID_VARBD = checkVB(line, varBinding, isKeepVB);
+						VALID_VARBD = checkVB(line, varBinding);
 					}
 					if (!VALID_EST) {
 						VALID_EST = checkEST(line, errorS);
-					}					
+					}
 				}
 				Object += line.toString() + "\n";
 				if (line.isEmpty()) {
+					if(VALID_VARBD && !isKeepVB) {
+						VALID_VARBD = false;
+					}else if(!VALID_VARBD && !isKeepVB) {
+						VALID_VARBD = true;
+					}
+					if(isKeepVB) {
+						VALID_VARBD = true;
+					}
 					if (VALIDIP && VALID_EST && VALID_VARBD) {
 						sb.append(Object);
 					}
@@ -48,24 +57,16 @@ public class FilterSNMP extends Constant {
 		return sb;
 	}
 
-	private static boolean checkVB(String str, String varBinding, boolean isKeepVB) {
-		if(varBinding == "") return true;
-		str = str.replaceAll("\\s+", "-");
-		String s[] = {};
-		try {
-			s = str.split("="); 
-			s = s[1].split("-");
-			
-		}catch (Exception e) {
-			return false;
-		}
-		if (s[1].equals(varBinding)) {
-			if (isKeepVB) {
+	private static boolean checkVB(String str, String varBinding) {
+		if (varBinding == "")
+			return true;
+		else {
+			if (str.contains(varBinding + " binding")) {
 				return true;
-			} else
+			} else {
 				return false;
-		} else
-			return false;
+			}
+		}
 	}
 
 	private static boolean checkEST(String str, String errorStatus) {
@@ -81,7 +82,6 @@ public class FilterSNMP extends Constant {
 				return true;
 			if (str.contains(nesting)) {
 				if (isKeepN) {
-
 					return true;
 				} else {
 					return false;
@@ -92,8 +92,9 @@ public class FilterSNMP extends Constant {
 			return false;
 	}
 
-	
 //	public static void main(String[] args) throws IOException {
-//		//System.out.println(readFileP("D:\\notepad++\\snmptracing.log", "135.249.41.16", "452717", "40", "noError", true, true));\
+//		// System.out.println(readFileP("D:\\notepad++\\LogDemo\\snmptracing.log.1",
+//		// "135.249.41.16", "", "40", "", true, true));
+//		test();
 //	}
 }

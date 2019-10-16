@@ -105,9 +105,9 @@ public class FormMain1 extends NodeType {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(486, 595);
+		shell.setSize(808, 595);
 		shell.setText("Search Tool");
-		shell.setLayout(new GridLayout(2, false));
+		shell.setLayout(new GridLayout(3, false));
 		// shell.setImage(ICON);
 		final TabFolder tabFolder = new TabFolder(shell, SWT.NONE);
 		tabFolder.setLocation(-4, -22);
@@ -115,9 +115,7 @@ public class FormMain1 extends NodeType {
 		gd_tabFolder.heightHint = 205;
 		gd_tabFolder.widthHint = 418;
 		tabFolder.setLayoutData(gd_tabFolder);
-
 		tabFolder.addSelectionListener(new SelectionListener() {
-
 			public void widgetSelected(SelectionEvent e) {
 				TAB_INDEX = tabFolder.getSelectionIndex();
 				if (TAB_INDEX == 1) {
@@ -125,6 +123,7 @@ public class FormMain1 extends NodeType {
 						System.out.println("null");
 					btnExportFile.setSelection(true);
 					btnExportFile.setEnabled(false);
+					styledText.setText("");
 					setEnable(true);
 
 				} else {
@@ -144,21 +143,18 @@ public class FormMain1 extends NodeType {
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 
 		tabS = new TabItem(tabFolder, SWT.NONE);
 		tabS.setText("Search");
-		// shell.setImage(small);
 
 		grS = new Group(tabFolder, SWT.NONE);
 		tabS.setControl(grS);
 		grS.setLocation(5, -104);
 
 		Button btnOpenFile = new Button(grS, SWT.NONE);
-		btnOpenFile.setBounds(10, 26, 62, 25);
+		btnOpenFile.setBounds(10, 11, 62, 25);
 		btnOpenFile.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -167,7 +163,6 @@ public class FormMain1 extends NodeType {
 				fd.setFilterPath(SELECTED);
 				String[] filterExt = { "*.xml", "*.txt", "*.doc", ".rtf", "*.*" };
 				fd.setFilterExtensions(filterExt);
-				// fd.open();
 				if ((SELECTED = fd.open()) == null)
 					return;
 				else
@@ -177,7 +172,7 @@ public class FormMain1 extends NodeType {
 		btnOpenFile.setText("Open File");
 
 		txtPath = new Text(grS, SWT.BORDER);
-		txtPath.setBounds(77, 28, 297, 21);
+		txtPath.setBounds(77, 13, 297, 21);
 		txtPath.setEnabled(false);
 
 		lblParentTag = new Label(grS, SWT.NONE);
@@ -205,10 +200,8 @@ public class FormMain1 extends NodeType {
 		btnOnlyAttr.setBounds(380, 59, 46, 16);
 		btnOnlyAttr.setText("Only");
 		btnOnlyAttr.addSelectionListener(new SelectionAdapter() {
-
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
 				super.widgetSelected(e);
 				Button btn = (Button) e.getSource();
 				ONLY_ATTR = btn.getSelection();
@@ -220,15 +213,12 @@ public class FormMain1 extends NodeType {
 		btnOnlyChild.setBounds(50, 112, 138, 16);
 		btnOnlyChild.setText("Only (comming soon)");
 		btnOnlyChild.addSelectionListener(new SelectionAdapter() {
-
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
 				super.widgetSelected(e);
 				Button btn = (Button) e.getSource();
 				ONLY_CHILD = btn.getSelection();
 			}
-
 		});
 
 		btnOnlyChild.setEnabled(false);
@@ -236,27 +226,27 @@ public class FormMain1 extends NodeType {
 		btnLevel.setBounds(50, 136, 93, 16);
 		btnLevel.setText("with level tag");
 		btnLevel.addSelectionListener(new SelectionAdapter() {
-
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
 				super.widgetSelected(e);
 				Button btn = (Button) e.getSource();
 				HAVE_LEVEL = btn.getSelection();
 				if (btn.getSelection()) {
 					txtLevel.setEnabled(true);
+
 				} else {
-					txtLevel.setText("0");
+					// txtLevel.setText("0");
 					txtLevel.setEnabled(false);
+
 				}
 			}
 
 		});
 
 		txtLevel = new Text(grS, SWT.BORDER);
-		txtLevel.setBounds(142, 134, 29, 21);
+		txtLevel.setBounds(149, 134, 29, 21);
 		txtLevel.setEnabled(false);
-		txtLevel.setText("0");
+		// txtLevel.setText("0");
 
 		tabF = new TabItem(tabFolder, SWT.NONE);
 		tabF.setText("Filter");
@@ -266,7 +256,7 @@ public class FormMain1 extends NodeType {
 		grF.layout(false);
 
 		btnFolder = new Button(grF, SWT.NONE);
-		btnFolder.setBounds(10, 28, 88, 25);
+		btnFolder.setBounds(10, 10, 88, 25);
 		btnFolder.setText("Choose Folder");
 		btnFolder.addSelectionListener(new SelectionAdapter() {
 
@@ -289,42 +279,42 @@ public class FormMain1 extends NodeType {
 		});
 
 		txtFolder = new Text(grF, SWT.BORDER);
-		txtFolder.setBounds(104, 30, 251, 21);
+		txtFolder.setBounds(104, 12, 251, 21);
 		txtFolder.setEnabled(false);
 		Label lblNE = new Label(grF, SWT.NONE);
-		lblNE.setBounds(51, 89, 32, 15);
+		lblNE.setBounds(51, 71, 32, 15);
 		lblNE.setText("NE IP:");
 
 		txtNE = new Text(grF, SWT.BORDER);
-		txtNE.setBounds(123, 86, 165, 21);
+		txtNE.setBounds(123, 68, 165, 21);
 
 		lblFMS = new Label(grF, SWT.NONE);
-		lblFMS.setBounds(51, 64, 62, 15);
+		lblFMS.setBounds(51, 46, 62, 15);
 		lblFMS.setText("Format File:");
 
 		txtFM = new Text(grF, SWT.BORDER);
-		txtFM.setBounds(123, 61, 165, 21);
+		txtFM.setBounds(123, 43, 165, 21);
 
 		Label lblNesting = new Label(grF, SWT.NONE);
-		lblNesting.setBounds(51, 114, 55, 15);
+		lblNesting.setBounds(51, 96, 55, 15);
 		lblNesting.setText("Nesting:");
 
 		txtNesting = new Text(grF, SWT.BORDER);
-		txtNesting.setBounds(123, 110, 165, 21);
+		txtNesting.setBounds(123, 92, 165, 21);
 
 		Button cbKeepNesting = new Button(grF, SWT.CHECK);
-		cbKeepNesting.setBounds(293, 112, 55, 16);
+		cbKeepNesting.setBounds(293, 94, 55, 16);
 		cbKeepNesting.setText("Keep");
 
 		Label lblVB = new Label(grF, SWT.NONE);
-		lblVB.setBounds(51, 153, 62, 15);
+		lblVB.setBounds(51, 135, 62, 15);
 		lblVB.setText("Variable BD:");
 
 		txtVB = new Text(grF, SWT.BORDER);
-		txtVB.setBounds(123, 147, 165, 21);
+		txtVB.setBounds(123, 129, 165, 21);
 
 		Button cbKeepVB = new Button(grF, SWT.CHECK);
-		cbKeepVB.setBounds(293, 150, 47, 16);
+		cbKeepVB.setBounds(293, 132, 47, 16);
 		cbKeepVB.setText("Keep");
 		cbKeepVB.addSelectionListener(new SelectionAdapter() {
 
@@ -335,16 +325,16 @@ public class FormMain1 extends NodeType {
 				Button btn = (Button) e.getSource();
 				IS_KEEP_VB = btn.getSelection();
 			}
-			
+
 		});
-		
-		
+
 		Label lblES = new Label(grF, SWT.NONE);
-		lblES.setBounds(51, 178, 67, 15);
+		lblES.setBounds(51, 160, 67, 15);
 		lblES.setText("Error Status:");
 
 		txtES = new Text(grF, SWT.BORDER);
-		txtES.setBounds(123, 174, 165, 21);
+		txtES.setBounds(123, 156, 165, 21);
+
 		cbKeepNesting.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -357,45 +347,50 @@ public class FormMain1 extends NodeType {
 		});
 
 		grOK = new Group(shell, SWT.NONE);
-		GridData gd_grOK = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
+		GridData gd_grOK = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		gd_grOK.heightHint = 125;
 		grOK.setLayoutData(gd_grOK);
 		btnExportFile = new Button(grOK, SWT.CHECK);
-		btnExportFile.setBounds(69, 53, 93, 16);
+		btnExportFile.setBounds(58, 131, 93, 16);
 		btnExportFile.setText("Export File");
 		btnOpenA = new Button(grOK, SWT.CHECK);
-		btnOpenA.setBounds(69, 75, 195, 16);
+		btnOpenA.setBounds(58, 153, 195, 16);
 		btnOpenA.setText("Open when export complete");
 		btnOpenA.setEnabled(false);
 
 		lblFileName = new Label(grOK, SWT.NONE);
-		lblFileName.setBounds(30, 27, 55, 15);
+		lblFileName.setBounds(47, 69, 55, 15);
 		lblFileName.setText("File name:");
 		lblFileName.setEnabled(false);
 
 		txtFileName = new Text(grOK, SWT.BORDER);
-		txtFileName.setBounds(85, 24, 98, 21);
+		txtFileName.setBounds(109, 66, 98, 21);
 		txtFileName.setEnabled(false);
 
 		btnURLOut = new Button(grOK, SWT.NONE);
-		btnURLOut.setBounds(189, 22, 75, 25);
+		btnURLOut.setBounds(27, 35, 75, 25);
 		btnURLOut.setText("URL Output");
 		btnURLOut.setEnabled(false);
 
 		txtURLOut = new Text(grOK, SWT.BORDER);
-		txtURLOut.setBounds(270, 24, 175, 21);
+		txtURLOut.setBounds(108, 37, 201, 21);
 		txtURLOut.setEnabled(false);
 
 		btnFind = new Button(grOK, SWT.NONE);
-		btnFind.setBounds(171, 108, 108, 25);
+		btnFind.setBounds(160, 186, 108, 25);
 		btnFind.setText("OKE");
 
 		btnFind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				FOUNDED = false;
 				switch (TAB_INDEX) {
 				case 0:
 					FOUNDED = false;
+					if (txtLevel.getText().isEmpty())
+						LVNULL = true;
+					else
+						LVNULL = false;
 					if (txtPath.getText().isEmpty()) {
 						createMes(shell, "ERROR", "The file hasn't been opened !!!");
 						return;
@@ -423,9 +418,13 @@ public class FormMain1 extends NodeType {
 								createMes(shell, "ERROR", "Not Found");
 								styledText.setText("");
 								return;
+							} else {
+								if (!HAVE_EXPORT) {
+									styledText.setText(STR_BUILDER.toString());
+									createMes(shell, "NOTIFICATION", "Search complete!!!");
+								}
 							}
 							// toPrettyString(STR_BUILDER.toString(), 4);
-							styledText.setText(STR_BUILDER.toString());
 							if (HAVE_EXPORT) {
 								exportXML(createURLOut(txtFileName.getText()), STR_BUILDER, HAVE_OPEN);
 								if (!HAVE_OPEN) {
@@ -491,7 +490,8 @@ public class FormMain1 extends NodeType {
 							try {
 								exportXML(txtURLOut.getText() + "\\" + createPathFilter(ls),
 										FilterSNMP.readFileP(URL_FILTER + "\\" + ls, txtNE.getText(),
-												txtNesting.getText(),txtVB.getText(),txtES.getText(), IS_KEEP_N, IS_KEEP_VB),
+												txtNesting.getText(), txtVB.getText(), txtES.getText(), IS_KEEP_N,
+												IS_KEEP_VB),
 										HAVE_OPEN);
 								// System.out.println(ls);
 							} catch (Exception e1) {
@@ -565,7 +565,7 @@ public class FormMain1 extends NodeType {
 		});
 
 		styledText = new StyledText(shell, SWT.BORDER | SWT.V_SCROLL | SWT.MULTI | SWT.H_SCROLL);
-		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 
 		styledText.addLineStyleListener(new LineStyleListener() {
 
@@ -585,6 +585,15 @@ public class FormMain1 extends NodeType {
 			public void modifyText(ModifyEvent e) {
 			}
 		});
+		// test();
+	}
+
+	public void test() {
+
+		txtFM.setText("snmptracing.log");
+		txtNE.setText("135.249.41.68");
+		txtVB.setText("40");
+
 	}
 
 	public void setEnable(boolean bl) {

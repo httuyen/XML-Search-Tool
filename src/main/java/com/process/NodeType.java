@@ -41,14 +41,6 @@ public class NodeType extends Constant {
 		findNode(root, tagName, childTag, levelChild, attrsMap, isHaveAttr, isOnlyAttr);
 	}
 
-	private static void increeTab(int num) {
-		String tab = "";
-		for (int i = 0; i < num; i++) {
-			tab += "\t";
-		}
-		System.out.print(tab);
-	}
-
 	private static NamedNodeMap createListAttr(Element element, NamedNodeMap nodeMap) {
 
 		return nodeMap;
@@ -99,12 +91,15 @@ public class NodeType extends Constant {
 
 	private static boolean checkChildExist1(Element element, String childTag) {
 		NodeList nodeList = element.getChildNodes();
+		if(nodeList.getLength()==0) return false;
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);
 			short type = node.getNodeType();
 			switch (type) {
 			case Node.ELEMENT_NODE:
+				//System.out.println(node.getNodeName() + "_" + childTag);
 				if (node.getNodeName().equals(childTag)) {
+					
 					KEY_FLAG = true;
 					return true;
 				} else {
@@ -124,7 +119,6 @@ public class NodeType extends Constant {
 	private static boolean checkChildExist(Element element, String childTagName, int levelChild, boolean isOnlyChild)
 			throws InterruptedException {
 		NodeList nodeList = element.getChildNodes();
-
 		stack.push(++LEVEL_COUNT);
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);
@@ -154,8 +148,18 @@ public class NodeType extends Constant {
 		return false;
 
 	}
-
+	
+	private static String inscreTab(int lvl) {
+		String str="";
+		for(int i=0; i < lvl; i++) {
+			str+="\t";			
+		}
+		return str;
+	}
+	
 	private static int printNode(Element element) throws InterruptedException {
+		stack_tab.push(LEVEL_COUNT++);
+		STR_BUILDER= STR_BUILDER.append(inscreTab(stack_tab.peek()));
 		STR_BUILDER = STR_BUILDER.append("<" + element.getNodeName());
 		NamedNodeMap nodeMap = element.getAttributes();
 		NodeList nodeList = element.getChildNodes();
@@ -190,6 +194,7 @@ public class NodeType extends Constant {
 				//STR_BUILDER = STR_BUILDER.append(node.getNodeValue());
 				break;
 			case Node.COMMENT_NODE:
+				STR_BUILDER= STR_BUILDER.append(inscreTab(stack_tab.peek()));
 				STR_BUILDER = STR_BUILDER.append("<!-- " + node.getNodeValue() + "-->\n");
 				//STR_BUILDER = STR_BUILDER.append("<!-- " + node.getNodeValue() + "-->");
 				break;
@@ -200,10 +205,15 @@ public class NodeType extends Constant {
 			}
 		}
 		if (nodeList.getLength() == 0) {
+			stack_tab.pop();
+			LEVEL_COUNT--;
 			return 0;
 		} else {
+			STR_BUILDER= STR_BUILDER.append(inscreTab(stack_tab.peek()));
 			STR_BUILDER = STR_BUILDER.append("</" + element.getNodeName() + ">\n");
 			//STR_BUILDER = STR_BUILDER.append("</" + element.getNodeName()+">");
+			stack_tab.pop();
+			LEVEL_COUNT--;
 			return 0;
 		}
 		
@@ -233,7 +243,7 @@ public class NodeType extends Constant {
 						}
 					}
 
-					if (!isHaveAttr && !childTag.isEmpty()) {
+					if (!isHaveAttr && !childTag.isEmpty() && LVNULL) {
 						KEY_FLAG = false;
 						if (checkChildExist1((Element) node, childTag)) {
 							printNode((Element) node);
@@ -242,7 +252,7 @@ public class NodeType extends Constant {
 						}
 					}
 
-					if (isHaveAttr && levelChild == 0) {
+					if (isHaveAttr && LVNULL) {
 						KEY_FLAG = false;
 						if (checkAttrMulti(attrsMap, setMap((Element) node), isOnlyAttr)) {
 							if (checkChildExist1((Element) node, childTag)) {
@@ -254,16 +264,8 @@ public class NodeType extends Constant {
 						} else
 							break;
 					}
-					if (!isHaveAttr && levelChild == 0) {
-						KEY_FLAG = false;
-						if (checkChildExist1((Element) node, childTag)) {
-							printNode((Element) node);
-							FOUNDED = true;
-						} else
-							break;
-					}
 
-					if (isHaveAttr && levelChild != 0) {
+					if (isHaveAttr && !LVNULL) {
 
 						if (checkAttrMulti(attrsMap, setMap((Element) node), isOnlyAttr)) {
 							if (checkChildExist((Element) node, childTag, levelChild, false)) {
@@ -277,7 +279,7 @@ public class NodeType extends Constant {
 							break;
 
 					}
-					if (!isHaveAttr && levelChild != 0) {
+					if (!isHaveAttr && !LVNULL) {
 						if (checkChildExist((Element) node, childTag, levelChild, false)) {
 							printNode((Element) node);
 							FOUNDED = true;

@@ -29,7 +29,7 @@ import org.xml.sax.InputSource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Constant {
-	public static Image ICON =  new Image(null, ".\\src\\images\\search.ico");
+	// public static Image ICON = new Image(null, ".\\src\\search.ico");
 	public static int LEVEL_COUNT = 0;
 	public static int CHILD_COUNT = 0;
 	public static int TAB_INDEX = -1;
@@ -37,7 +37,7 @@ public class Constant {
 	public static String URL_OUT = "";
 	public static String TEXT = "";
 	public static String xmlString = "";
-	public static String URL_FILTER= "";
+	public static String URL_FILTER = "";
 	public static boolean ONLY_ATTR = false;
 	public static boolean ONLY_CHILD = false;
 	public static boolean HAVE_LEVEL = false;
@@ -47,14 +47,17 @@ public class Constant {
 	public static boolean FOUNDED = false;
 	public static boolean VALIDIP = false;
 	public static boolean VALID_EST = false;
-	public static boolean VALID_VARBD = false;	
+	public static boolean VALID_VARBD = false;
 	public static boolean SEARCH_OPTION = true;
 	public static boolean IS_KEEP_N = false;
 	public static boolean IS_KEEP_VB = false;
+	public static boolean IS_ONLY_VB = false;
+	public static boolean LVNULL = true;
 	public static String LINE_NUMBER_KEY_NAME = "lineNumber";
 	public static ObjectMapper OBJ = new ObjectMapper();
 	protected static Map<String, String> mapAttr = new HashMap<String, String>();
 	public static Stack<Integer> stack = new Stack<Integer>();
+	public static Stack<Integer> stack_tab = new Stack<Integer>();
 	public static StringBuilder STR_BUILDER = new StringBuilder();
 
 	public static void createMes(Shell shell, String text, String meString) {
@@ -65,40 +68,39 @@ public class Constant {
 	}
 
 	public static String toPrettyString(String xml, int indent) {
-	    try {
-	        // Turn xml string into a document
-	        Document document = (Document) DocumentBuilderFactory.newInstance()
-	                .newDocumentBuilder()
-	                .parse(new InputSource(new ByteArrayInputStream(xml.getBytes("utf-8"))));
+		try {
+			// Turn xml string into a document
+			Document document = (Document) DocumentBuilderFactory.newInstance().newDocumentBuilder()
+					.parse(new InputSource(new ByteArrayInputStream(xml.getBytes("utf-8"))));
 
-	        // Remove whitespaces outside tags
-	        ((Node) document).normalize();
-	        XPath xPath = XPathFactory.newInstance().newXPath();
-	        NodeList nodeList = (NodeList) xPath.evaluate("//text()[normalize-space()='']",
-	                                                      document,
-	                                                      XPathConstants.NODESET);
+			// Remove whitespaces outside tags
+			((Node) document).normalize();
+			XPath xPath = XPathFactory.newInstance().newXPath();
+			NodeList nodeList = (NodeList) xPath.evaluate("//text()[normalize-space()='']", document,
+					XPathConstants.NODESET);
 
-	        for (int i = 0; i < nodeList.getLength(); ++i) {
-	            Node node = nodeList.item(i);
-	            node.getParentNode().removeChild(node);
-	        }
+			for (int i = 0; i < nodeList.getLength(); ++i) {
+				Node node = nodeList.item(i);
+				node.getParentNode().removeChild(node);
+			}
 
-	        // Setup pretty print options
-	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	        transformerFactory.setAttribute("indent-number", indent);
-	        Transformer transformer = transformerFactory.newTransformer();
-	        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-	        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			// Setup pretty print options
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			transformerFactory.setAttribute("indent-number", indent);
+			Transformer transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-	        // Return pretty print xml string
-	        StringWriter stringWriter = new StringWriter();
-	        transformer.transform(new DOMSource((Node) document), new StreamResult(stringWriter));
-	        return stringWriter.toString();
-	    } catch (Exception e) {
-	        throw new RuntimeException(e);
-	    }
+			// Return pretty print xml string
+			StringWriter stringWriter = new StringWriter();
+			transformer.transform(new DOMSource((Node) document), new StreamResult(stringWriter));
+			return stringWriter.toString();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
+
 	public static String formatStr(String text) {
 		if (text.isEmpty())
 			return text;
@@ -140,22 +142,23 @@ public class Constant {
 		String str = URL_OUT + "\\" + fileName.replaceAll("\\s+", "") + ".xml";
 		return str;
 	}
-	
-	public static ArrayList<String> listFile(String pathName,String formatFileName) {		
+
+	public static ArrayList<String> listFile(String pathName, String formatFileName) {
 		ArrayList<String> ls = new ArrayList<String>();
 		File f = new File(pathName);
 		File[] files = f.listFiles();
-        for(File file: files){
-        	if(file.getName().contains("Filtered_")) continue;
-        	if(file.getName().contains(formatFileName)) {
-                ls.add(file.getName());        		
-        	}
-        }
+		for (File file : files) {
+			if (file.getName().contains("Filtered_"))
+				continue;
+			if (file.getName().contains(formatFileName)) {
+				ls.add(file.getName());
+			}
+		}
 		return ls;
 	}
-	
-	public static String createPathFilter (String path) {
-		return  "Filtered_" + path;
+
+	public static String createPathFilter(String path) {
+		return "Filtered_" + path;
 	}
 //	public static void main(String[] args) {
 ////		URL_FILTER="D:\\notepad++";
