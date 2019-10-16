@@ -451,9 +451,12 @@ public class FormMain1 extends NodeType {
 								createMes(shell, "ERROR", "Not Found");
 								styledText.setText("");
 								return;
+							}else {
+								if (!HAVE_EXPORT) {
+									styledText.setText(STR_BUILDER.toString());
+									createMes(shell, "NOTIFICATION", "Search complete!!!");
+								}
 							}
-							// toPrettyString(STR_BUILDER.toString(), 4);
-							styledText.setText(STR_BUILDER.toString());
 							if (HAVE_EXPORT) {
 								exportXML(createURLOut(txtFileName.getText()), STR_BUILDER, HAVE_OPEN);
 								if (!HAVE_OPEN) {
