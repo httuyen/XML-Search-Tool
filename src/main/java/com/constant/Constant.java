@@ -53,13 +53,15 @@ public class Constant {
 	public static boolean IS_KEEP_VB = false;
 	public static boolean IS_ONLY_VB = false;
 	public static boolean LVNULL = true;
+	public static boolean CHECKED = false;
 	public static String LINE_NUMBER_KEY_NAME = "lineNumber";
 	public static ObjectMapper OBJ = new ObjectMapper();
 	protected static Map<String, String> mapAttr = new HashMap<String, String>();
 	public static Stack<Integer> stack = new Stack<Integer>();
 	public static Stack<Integer> stack_tab = new Stack<Integer>();
 	public static StringBuilder STR_BUILDER = new StringBuilder();
-
+	public static String [] ITEMS = {"snmptracing.log","mobject.log"};
+	
 	public static void createMes(Shell shell, String text, String meString) {
 		MessageBox messageBox = new MessageBox(shell);
 		messageBox.setMessage(meString);

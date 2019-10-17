@@ -18,13 +18,13 @@ public class FilterSNMP extends Constant {
 		BufferedReader br = Files.newBufferedReader(Paths.get(path));
 		try {
 			while ((line = br.readLine()) != null) {
-				
+
 				if (temp == 2) {
 					VALIDIP = checkIP(line, IP, nesting, isKeepN);
 				}
 				if (temp > 3) {
 					if (!VALID_VARBD) {
-						VALID_VARBD = checkVB(line, varBinding);
+						VALID_VARBD = checkVB(line, varBinding, isKeepVB);
 					}
 					if (!VALID_EST) {
 						VALID_EST = checkEST(line, errorS);
@@ -32,13 +32,13 @@ public class FilterSNMP extends Constant {
 				}
 				Object += line.toString() + "\n";
 				if (line.isEmpty()) {
-					if(VALID_VARBD && !isKeepVB) {
-						VALID_VARBD = false;
-					}else if(!VALID_VARBD && !isKeepVB) {
-						VALID_VARBD = true;
-					}
-					if(isKeepVB) {
-						VALID_VARBD = true;
+					if(varBinding != "") {
+						if(VALID_VARBD && !isKeepVB) {
+							VALID_VARBD = false;
+						}
+						else if (!VALID_VARBD && !isKeepVB) {
+							VALID_VARBD = true;
+						}						
 					}
 					if (VALIDIP && VALID_EST && VALID_VARBD) {
 						sb.append(Object);
@@ -46,6 +46,7 @@ public class FilterSNMP extends Constant {
 					VALIDIP = false;
 					VALID_EST = false;
 					VALID_VARBD = false;
+					CHECKED = false;
 					temp = 1;
 					Object = "";
 				} else
@@ -54,18 +55,18 @@ public class FilterSNMP extends Constant {
 		} catch (IOException e) {
 			System.err.format("IOException: %s%n", e);
 		}
+		// System.out.println(sb);
 		return sb;
 	}
 
-	private static boolean checkVB(String str, String varBinding) {
+	private static boolean checkVB(String str, String varBinding, boolean isKeepVB) {
 		if (varBinding == "")
 			return true;
-		else {
-			if (str.contains(varBinding + " binding")) {
-				return true;
-			} else {
-				return false;
-			}
+		if (str.contains("= " + varBinding + " binding")) {
+			//CHECKED = true;
+			return true;
+		}else {
+			return false;
 		}
 	}
 
@@ -93,8 +94,8 @@ public class FilterSNMP extends Constant {
 	}
 
 //	public static void main(String[] args) throws IOException {
-//		// System.out.println(readFileP("D:\\notepad++\\LogDemo\\snmptracing.log.1",
-//		// "135.249.41.16", "", "40", "", true, true));
-//		test();
+//		System.out.println(
+//				readFileP("D:\\Notepadd++\\logtdemo\\snmptracing.log.1", "135.249.41.68", "", "", "", true, true));
+//		// test();
 //	}
 }
