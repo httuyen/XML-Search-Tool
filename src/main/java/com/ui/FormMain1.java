@@ -20,12 +20,14 @@ import org.eclipse.swt.graphics.GlyphMetrics;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
@@ -33,8 +35,6 @@ import org.eclipse.swt.widgets.Text;
 import com.constant.Constant;
 import com.process.FilterSNMP;
 import com.process.NodeType;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Spinner;
 
 public class FormMain1 extends NodeType {
 
@@ -136,6 +136,7 @@ public class FormMain1 extends NodeType {
 						btnExportFile.setEnabled(true);
 						setEnable(false);
 						btnOpenA.setEnabled(false);
+						btnOpenA.setSelection(false);
 						lblFileName.setEnabled(false);
 						txtFileName.setEnabled(false);
 					} catch (Exception e2) {
@@ -224,10 +225,11 @@ public class FormMain1 extends NodeType {
 			}
 		});
 
-		btnOnlyChild.setEnabled(false);
+		btnOnlyChild.setVisible(false);
 		Button btnLevel = new Button(grS, SWT.CHECK);
 		btnLevel.setBounds(50, 136, 93, 16);
 		btnLevel.setText("with level tag");
+		btnLevel.setVisible(false);
 		btnLevel.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -245,9 +247,10 @@ public class FormMain1 extends NodeType {
 			}
 
 		});
-
+		
 		spinner = new Spinner(grS, SWT.BORDER | SWT.READ_ONLY);
 		spinner.setBounds(144, 134, 47, 22);
+		spinner.setVisible(false);
 		spinner.setEnabled(false);
 		// txtLevel.setText("0");
 
@@ -513,18 +516,17 @@ public class FormMain1 extends NodeType {
 										FilterSNMP.readFileP(URL_FILTER + "\\" + ls, txtNE.getText(),
 												txtNesting.getText(), txtVB.getText(), txtES.getText(), IS_KEEP_N,
 												IS_KEEP_VB),
-										HAVE_OPEN);
+										!HAVE_OPEN);
 								// System.out.println(ls);
+								
 							} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								createMes(shell, "Error", "Input invalid");
 								e1.printStackTrace();
 							}
 						}
-
-						if (!HAVE_OPEN) {
-							createMes(shell, "NOTIFICATION", "Export complete!!!");
-						}
+						
+						createMes(shell, "NOTIFICATION", "Export complete!!!");
 					}
 					break;
 				default:
@@ -625,5 +627,6 @@ public class FormMain1 extends NodeType {
 		txtFileName.setEnabled(!bl);
 		btnURLOut.setEnabled(bl);
 		btnOpenA.setEnabled(!bl);
+		btnOpenA.setSelection(!bl);
 	}
 }

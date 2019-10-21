@@ -71,6 +71,7 @@ public class FilterSNMP extends Constant {
 	}
 
 	private static boolean checkEST(String str, String errorStatus) {
+		errorStatus = " " + errorStatus;
 		if (str.contains(errorStatus) || errorStatus == "") {
 			return true;
 		} else

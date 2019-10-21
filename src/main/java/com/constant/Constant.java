@@ -60,7 +60,7 @@ public class Constant {
 	public static Stack<Integer> stack = new Stack<Integer>();
 	public static Stack<Integer> stack_tab = new Stack<Integer>();
 	public static StringBuilder STR_BUILDER = new StringBuilder();
-	public static String [] ITEMS = {"snmptracing.log","mobject.log"};
+	public static String [] ITEMS = {"snmptracing.log"};
 	
 	public static void createMes(Shell shell, String text, String meString) {
 		MessageBox messageBox = new MessageBox(shell);
